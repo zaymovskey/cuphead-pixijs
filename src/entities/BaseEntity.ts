@@ -21,7 +21,7 @@ export abstract class BaseEntity extends Container {
     const prevPoint: PointData = { x: this.x, y: this.y };
 
     this.gravity?.update();
-    this.collision?.update(prevPoint);
     this.update();
+    this.collision?.update(prevPoint);
   }
 }
