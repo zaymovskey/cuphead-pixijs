@@ -3,6 +3,7 @@ import { BaseEntity } from "../entities/BaseEntity.ts";
 export const movementKeys: Record<string, string[]> = {
   RIGHT: ["arrowright", "d", "в"],
   LEFT: ["arrowleft", "a", "ф"],
+  UP: ["arrowup", "w", "ц"],
 };
 
 type IMovement = -1 | 0 | 1;
@@ -13,6 +14,8 @@ export class Gravity {
 
   private velocityX: number;
   private readonly maxVelocityX: number;
+
+  private readonly jumpAcceleration: number;
 
   private entity: BaseEntity;
 
@@ -31,12 +34,14 @@ export class Gravity {
     maxVelocityX: number,
     velocityY?: number,
     velocityX?: number,
+    jumpAcceleration?: number,
   ) {
     this.acceleration = acceleration;
     this.velocityY = velocityY || 0;
     this.entity = entity;
     this.velocityX = velocityX || 0;
     this.maxVelocityX = maxVelocityX;
+    this.jumpAcceleration = jumpAcceleration || 8;
   }
 
   update() {
@@ -65,5 +70,12 @@ export class Gravity {
   stopRightMove() {
     this.directionContext.right = 0;
     this.movement.x = this.directionContext.left;
+  }
+
+  jump() {
+    if (this.entity.state !== "jump") {
+      this.entity.state = "jump";
+      this.velocityY -= this.jumpAcceleration;
+    }
   }
 }

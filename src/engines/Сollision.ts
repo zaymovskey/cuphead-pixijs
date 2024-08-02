@@ -23,8 +23,13 @@ export class Collision {
         this.entity.y =
           this.entity.y +
           (collisionEntity.y - (this.entity.y + this.entity.height));
+
         if (this.entity.gravity) {
           this.entity.gravity.velocityY = 0;
+
+          if (this.entity.state) {
+            this.entity.state = "stay";
+          }
         }
         return;
       }

@@ -5,6 +5,7 @@ import { Collision } from "../engines/Сollision.ts";
 export abstract class BaseEntity extends Container {
   gravity?: Gravity;
   public collision?: Collision;
+  public state?: string;
 
   protected constructor(collisionEntities?: BaseEntity[]) {
     super();

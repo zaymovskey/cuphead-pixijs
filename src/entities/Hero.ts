@@ -2,9 +2,15 @@ import { Graphics } from "pixi.js";
 import { BaseEntity } from "./BaseEntity.ts";
 import { Gravity, movementKeys } from "../engines/Gravity.ts";
 
+enum EnumHeroStates {
+  stay = "stay",
+  jump = "jump",
+}
+
 export class Hero extends BaseEntity {
   gravity: Gravity = new Gravity(this, 0.2, 2);
   collisionEntities: BaseEntity[] = [];
+  state: EnumHeroStates = EnumHeroStates.stay;
 
   constructor(collisionEntities: BaseEntity[]) {
     super(collisionEntities);
@@ -37,6 +43,9 @@ export class Hero extends BaseEntity {
     }
     if (movementKeys.RIGHT.includes(lowerKey)) {
       this.gravity.stopRightMove();
+    }
+    if (movementKeys.UP.includes(lowerKey)) {
+      this.gravity.jump();
     }
   }
 }
