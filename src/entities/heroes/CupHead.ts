@@ -3,6 +3,11 @@ import { BaseEntity } from "../BaseEntity.ts";
 import { Gravity } from "../../engines/Gravity.ts";
 import { Movement } from "../../engines/Movement.ts";
 import { KeyboardProcessor } from "../../engines/KeyboardProcessor.ts";
+import {
+  Collision,
+  ICollisionHandlers,
+  TypeCollisionHandler,
+} from "../../engines/Сollision.ts";
 
 export enum EnumHeroStates {
   stay = "stay",
@@ -22,7 +27,7 @@ export class CupHead extends BaseEntity {
   keyboardProcessor: KeyboardProcessor = new KeyboardProcessor();
 
   constructor(collisionEntities: BaseEntity[]) {
-    super(collisionEntities);
+    super();
 
     this.collisionEntities = collisionEntities;
     const view = new Graphics().rect(this.x, this.y, 40, 100).stroke("#66b466");
@@ -30,6 +35,7 @@ export class CupHead extends BaseEntity {
     this.addChild(view);
 
     this.setControl();
+    this.setCollisionHandlers();
   }
 
   update() {
@@ -60,5 +66,33 @@ export class CupHead extends BaseEntity {
         this.movement.jump();
       },
     });
+  }
+
+  setCollisionHandlers() {
+    const collisionHandlers: ICollisionHandlers = {};
+
+    collisionHandlers.top = (prevPoint, _) => {
+      this.y = prevPoint.y;
+      this.gravity.velocityY = 0;
+    };
+
+    collisionHandlers.bottom = (_, collisionEntity) => {
+      this.y = this.y = collisionEntity.y - this.height;
+      this.gravity.velocityY = 0;
+      this.state = EnumHeroStates.stay;
+    };
+
+    const collisionHandlerX: TypeCollisionHandler = (prevPoint, _) => {
+      this.x = prevPoint.x;
+    };
+
+    collisionHandlers.right = collisionHandlerX;
+    collisionHandlers.left = collisionHandlerX;
+
+    this.collision = new Collision(
+      this,
+      this.collisionEntities,
+      collisionHandlers,
+    );
   }
 }

@@ -21,6 +21,12 @@ export default class Game {
     );
     this.platforms.push(
       platformFactory.createPlatform(
+        { x: 150, y: 300 },
+        { width: 500, height: 70 },
+      ),
+    );
+    this.platforms.push(
+      platformFactory.createPlatform(
         { x: 550, y: 600 },
         { width: 500, height: 70 },
       ),
