@@ -37,6 +37,12 @@ export default class Game {
         { width: 500, height: 70 },
       ),
     );
+    this.platforms.push(
+      platformFactory.createPlatform(
+        { x: 1070, y: 350 },
+        { width: 500, height: 70 },
+      ),
+    );
 
     this.hero = new CupHead(this.platforms);
     this.hero.position = { x: 200, y: 10 };

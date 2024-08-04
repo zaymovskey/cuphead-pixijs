@@ -15,11 +15,22 @@ export type TypeCollisionHandler = (
   collisionEntity: BaseEntity,
 ) => void;
 
+export type TypeCollisionWithScreenBordersHandler = (
+  prevPoint: PointData,
+) => void;
+
 export interface ICollisionHandlers {
   top?: TypeCollisionHandler;
   bottom?: TypeCollisionHandler;
   left?: TypeCollisionHandler;
   right?: TypeCollisionHandler;
+}
+
+export interface ICollisionWithScreenBordersHandlers {
+  top?: TypeCollisionWithScreenBordersHandler;
+  bottom?: TypeCollisionWithScreenBordersHandler;
+  left?: TypeCollisionWithScreenBordersHandler;
+  right?: TypeCollisionWithScreenBordersHandler;
 }
 
 export class Collision {
@@ -31,19 +42,43 @@ export class Collision {
     left: () => {},
     right: () => {},
   };
-  public prevPoint: PointData = { x: 0, y: 0 };
+  private isCheckCollisionWithScreenBorders: boolean = false;
+  private readonly collisionWithScreenBordersHandlers: ICollisionWithScreenBordersHandlers =
+    {
+      top: () => {},
+      bottom: () => {},
+      left: () => {},
+      right: () => {},
+    };
 
   constructor(
     entity: BaseEntity,
     collisionEntities: BaseEntity[],
     collisionHandlers: ICollisionHandlers,
+    collisionWithScreenBordersHandlers?: ICollisionWithScreenBordersHandlers,
   ) {
     this.entity = entity;
     this.collisionEntities = collisionEntities;
-
     getEntriesFromObj(collisionHandlers).forEach(([key, handler]) => {
       this.collisionHandlers[key] = handler;
     });
+
+    if (!collisionWithScreenBordersHandlers) return;
+    getEntriesFromObj(collisionWithScreenBordersHandlers).forEach(
+      ([key, handler]) => {
+        this.collisionWithScreenBordersHandlers[key] = handler;
+        this.isCheckCollisionWithScreenBorders = true;
+      },
+    );
+  }
+
+  getCollisionType(collisionInfo: ICollisionInfo) {
+    return getEntriesFromObj(collisionInfo)
+      .filter(
+        ([key, collisionIsHappened]) =>
+          collisionIsHappened && key !== "isColliding",
+      )!
+      .map((collisionType) => collisionType[0]) as (keyof ICollisionHandlers)[];
   }
 
   update() {
@@ -52,19 +87,60 @@ export class Collision {
 
       if (!collisionInfo.isColliding) return;
 
-      if (collisionInfo.top) {
-        this.collisionHandlers.top?.(this.prevPoint, collisionEntity);
-      }
-      if (collisionInfo.bottom) {
-        this.collisionHandlers.bottom?.(this.prevPoint, collisionEntity);
-      }
-      if (collisionInfo.left) {
-        this.collisionHandlers.left?.(this.prevPoint, collisionEntity);
-      }
-      if (collisionInfo.right) {
-        this.collisionHandlers.right?.(this.prevPoint, collisionEntity);
-      }
+      const collisionTypes = this.getCollisionType(collisionInfo);
+      collisionTypes.forEach((collisionType) => {
+        this.collisionHandlers[collisionType]?.(
+          this.entity.prevPoint,
+          collisionEntity,
+        );
+      });
     });
+
+    if (!this.isCheckCollisionWithScreenBorders) return;
+
+    const collisionWithScreenBorderInfo =
+      this.checkCollisionWithScreenBorders();
+
+    if (!collisionWithScreenBorderInfo.isColliding) return;
+
+    const collisionTypes = this.getCollisionType(collisionWithScreenBorderInfo);
+    collisionTypes.forEach((collisionType) => {
+      this.collisionWithScreenBordersHandlers[collisionType]?.(
+        this.entity.prevPoint,
+      );
+    });
+  }
+
+  checkCollisionWithScreenBorders() {
+    const collisionInfo: ICollisionInfo = {
+      top: false,
+      bottom: false,
+      right: false,
+      left: false,
+      isColliding: false,
+    };
+
+    if (this.entity.y + this.entity.height > window.innerHeight) {
+      collisionInfo.bottom = true;
+      collisionInfo.isColliding = true;
+    }
+
+    if (this.entity.y < 0) {
+      collisionInfo.top = true;
+      collisionInfo.isColliding = true;
+    }
+
+    if (this.entity.x + this.entity.width > window.innerWidth) {
+      collisionInfo.right = true;
+      collisionInfo.isColliding = true;
+    }
+
+    if (this.entity.x < 0) {
+      collisionInfo.left = true;
+      collisionInfo.isColliding = true;
+    }
+
+    return collisionInfo;
   }
 
   checkCollision(collisionEntity: BaseEntity): ICollisionInfo {
@@ -81,7 +157,7 @@ export class Collision {
     }
 
     const currentY = this.entity.y;
-    this.entity.y = this.prevPoint.y;
+    this.entity.y = this.entity.prevPoint.y;
     if (!this.isCheckAABB(this.entity, collisionEntity)) {
       collisionInfo.isColliding = true;
       if (this.entity.y < collisionEntity.y) {
@@ -94,7 +170,7 @@ export class Collision {
     }
 
     this.entity.y = currentY;
-    this.entity.x = this.prevPoint.x;
+    this.entity.x = this.entity.prevPoint.x;
     if (!this.isCheckAABB(this.entity, collisionEntity)) {
       collisionInfo.isColliding = true;
       if (this.entity.x < collisionEntity.x) {

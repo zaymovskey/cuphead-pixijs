@@ -6,7 +6,9 @@ import { KeyboardProcessor } from "../../engines/KeyboardProcessor.ts";
 import {
   Collision,
   ICollisionHandlers,
+  ICollisionWithScreenBordersHandlers,
   TypeCollisionHandler,
+  TypeCollisionWithScreenBordersHandler,
 } from "../../engines/Сollision.ts";
 
 export enum EnumHeroStates {
@@ -70,29 +72,42 @@ export class CupHead extends BaseEntity {
 
   setCollisionHandlers() {
     const collisionHandlers: ICollisionHandlers = {};
-
     collisionHandlers.top = (prevPoint, _) => {
       this.y = prevPoint.y;
       this.gravity.velocityY = 0;
     };
-
     collisionHandlers.bottom = (_, collisionEntity) => {
       this.y = this.y = collisionEntity.y - this.height;
       this.gravity.velocityY = 0;
       this.state = EnumHeroStates.stay;
     };
-
     const collisionHandlerX: TypeCollisionHandler = (prevPoint, _) => {
       this.x = prevPoint.x;
     };
-
     collisionHandlers.right = collisionHandlerX;
     collisionHandlers.left = collisionHandlerX;
+
+    const collisionWithScreenBordersHandlers: ICollisionWithScreenBordersHandlers =
+      {};
+    collisionWithScreenBordersHandlers.bottom = () => {
+      this.y = window.innerHeight - this.height;
+      this.gravity.velocityY = 0;
+      this.state = EnumHeroStates.stay;
+    };
+    const collisionWithScreenBordersHandlerX: TypeCollisionWithScreenBordersHandler =
+      (prevPoint) => {
+        this.x = prevPoint.x;
+      };
+    collisionWithScreenBordersHandlers.left =
+      collisionWithScreenBordersHandlerX;
+    collisionWithScreenBordersHandlers.right =
+      collisionWithScreenBordersHandlerX;
 
     this.collision = new Collision(
       this,
       this.collisionEntities,
       collisionHandlers,
+      collisionWithScreenBordersHandlers,
     );
   }
 }
