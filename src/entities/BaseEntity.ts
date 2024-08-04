@@ -1,11 +1,14 @@
 import { Container, PointData } from "pixi.js";
 import { Gravity } from "../engines/Gravity.ts";
 import { Collision } from "../engines/Сollision.ts";
+import { EnumHeroStates } from "./heroes/CupHead/CupHead.ts";
+import { Movement } from "../engines/movement/Movement.ts";
 
 export abstract class BaseEntity extends Container {
   gravity?: Gravity;
+  movement?: Movement;
   public collision?: Collision;
-  public state?: string;
+  public state?: string | EnumHeroStates;
 
   protected constructor(collisionEntities?: BaseEntity[]) {
     super();
@@ -17,7 +20,7 @@ export abstract class BaseEntity extends Container {
 
   protected update() {}
 
-  public executeUpdate(): void {
+  public completeUpdate(): void {
     const prevPoint: PointData = { x: this.x, y: this.y };
 
     this.gravity?.update();

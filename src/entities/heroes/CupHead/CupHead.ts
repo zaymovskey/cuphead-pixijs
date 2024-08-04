@@ -1,16 +1,16 @@
 import { Graphics } from "pixi.js";
-import { BaseEntity } from "./BaseEntity.ts";
-import { Gravity } from "../engines/Gravity.ts";
-import { HeroMovement } from "../engines/HeroMovement.ts";
+import { BaseEntity } from "../../BaseEntity.ts";
+import { Gravity } from "../../../engines/Gravity.ts";
+import { Movement } from "../../../engines/movement/Movement.ts";
 
-enum EnumHeroStates {
+export enum EnumHeroStates {
   stay = "stay",
   jump = "jump",
 }
 
-export class Hero extends BaseEntity {
+export class CupHead extends BaseEntity {
   gravity: Gravity = new Gravity(this, 0.2, 2);
-  movement: HeroMovement = new HeroMovement(this, 2);
+  movement: Movement = new Movement(this, 2);
   collisionEntities: BaseEntity[] = [];
   state: EnumHeroStates = EnumHeroStates.stay;
 

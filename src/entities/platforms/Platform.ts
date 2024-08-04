@@ -1,7 +1,7 @@
 import { Graphics } from "pixi.js";
-import { BaseEntity } from "./BaseEntity.ts";
+import { BaseEntity } from "../BaseEntity.ts";
 
-interface IPlatformSize {
+export interface IPlatformSize {
   width: number;
   height: number;
 }

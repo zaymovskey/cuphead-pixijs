@@ -1,4 +1,4 @@
-import { BaseEntity } from "../entities/BaseEntity.ts";
+import { BaseEntity } from "../../entities/BaseEntity.ts";
 
 export const movementKeys: Record<string, string[]> = {
   RIGHT: ["arrowright", "d", "в"],
@@ -6,9 +6,9 @@ export const movementKeys: Record<string, string[]> = {
   UP: ["arrowup", "w", "ц"],
 };
 
-type IMovement = -1 | 0 | 1;
+type TypeMovement = -1 | 0 | 1;
 
-export class HeroMovement {
+export class Movement {
   private velocityX: number;
   private readonly maxVelocityX: number;
 
@@ -16,11 +16,11 @@ export class HeroMovement {
 
   private entity: BaseEntity;
 
-  private movement: { x: IMovement } = {
+  private movement: { x: TypeMovement } = {
     x: 0,
   };
 
-  private directionContext: { left: IMovement; right: IMovement } = {
+  private directionContext: { left: TypeMovement; right: TypeMovement } = {
     left: 0,
     right: 0,
   };
@@ -82,6 +82,9 @@ export class HeroMovement {
     if (movementKeys.RIGHT.includes(lowerKey)) {
       this.startRightMove();
     }
+    if (movementKeys.UP.includes(lowerKey)) {
+      this.jump();
+    }
   }
 
   onKeyUp(key: string) {
@@ -91,9 +94,6 @@ export class HeroMovement {
     }
     if (movementKeys.RIGHT.includes(lowerKey)) {
       this.stopRightMove();
-    }
-    if (movementKeys.UP.includes(lowerKey)) {
-      this.jump();
     }
   }
 }
