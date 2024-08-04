@@ -5,7 +5,7 @@ interface keyMapExecuteHandlers {
 
 export class KeyboardProcessor {
   private keyMap: {
-    [key in string]: keyMapExecuteHandlers;
+    [key in string]?: keyMapExecuteHandlers;
   } = {};
 
   constructor() {
@@ -28,11 +28,11 @@ export class KeyboardProcessor {
 
   onKeyDown(key: string) {
     const button = this.keyMap[key];
-    button.executeDown?.();
+    button?.executeDown?.();
   }
 
   onKeyUp(key: string) {
     const button = this.keyMap[key];
-    button.executeUp?.();
+    button?.executeUp?.();
   }
 }

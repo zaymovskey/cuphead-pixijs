@@ -1,5 +1,5 @@
 import { Application } from "pixi.js";
-import { CupHead } from "./entities/heroes/CupHead/CupHead.ts";
+import { CupHead } from "./entities/heroes/CupHead.ts";
 import { Platform } from "./entities/platforms/Platform.ts";
 import PlatformFactory from "./entities/platforms/PlatformFactory.ts";
 

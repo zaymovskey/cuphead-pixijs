@@ -1,8 +1,8 @@
 import { Container, PointData } from "pixi.js";
 import { Gravity } from "../engines/Gravity.ts";
 import { Collision } from "../engines/Сollision.ts";
-import { EnumHeroStates } from "./heroes/CupHead/CupHead.ts";
-import { Movement } from "../engines/movement/Movement.ts";
+import { EnumHeroStates } from "./heroes/CupHead.ts";
+import { Movement } from "../engines/Movement.ts";
 
 export abstract class BaseEntity extends Container {
   gravity?: Gravity;

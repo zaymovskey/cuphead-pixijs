@@ -1,10 +1,4 @@
-import { BaseEntity } from "../../entities/BaseEntity.ts";
-
-export const movementKeys: Record<string, string[]> = {
-  RIGHT: ["arrowright", "d", "в"],
-  LEFT: ["arrowleft", "a", "ф"],
-  UP: ["arrowup", "w", "ц"],
-};
+import { BaseEntity } from "../entities/BaseEntity.ts";
 
 type TypeMovement = -1 | 0 | 1;
 
@@ -35,9 +29,6 @@ export class Movement {
     this.velocityX = velocityX || 0;
     this.maxVelocityX = maxVelocityX;
     this.jumpAcceleration = jumpAcceleration || 7;
-
-    document.addEventListener("keydown", (ev) => this.onKeyDown(ev.key));
-    document.addEventListener("keyup", (ev) => this.onKeyUp(ev.key));
   }
 
   update() {
@@ -71,29 +62,6 @@ export class Movement {
     if (this.entity.state !== "jump") {
       this.entity.state = "jump";
       this.entity.gravity.velocityY -= this.jumpAcceleration;
-    }
-  }
-
-  onKeyDown(key: string) {
-    const lowerKey = key.toLowerCase();
-    if (movementKeys.LEFT.includes(lowerKey)) {
-      this.startLeftMove();
-    }
-    if (movementKeys.RIGHT.includes(lowerKey)) {
-      this.startRightMove();
-    }
-    if (movementKeys.UP.includes(lowerKey)) {
-      this.jump();
-    }
-  }
-
-  onKeyUp(key: string) {
-    const lowerKey = key.toLowerCase();
-    if (movementKeys.LEFT.includes(lowerKey)) {
-      this.stopLeftMove();
-    }
-    if (movementKeys.RIGHT.includes(lowerKey)) {
-      this.stopRightMove();
     }
   }
 }
