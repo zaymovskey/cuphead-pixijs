@@ -33,6 +33,11 @@ export interface ICollisionWithScreenBordersHandlers {
   right?: TypeCollisionWithScreenBordersHandler;
 }
 
+interface ICollisionsIsActive {
+  screenBorders: boolean;
+  collisionEntities: boolean;
+}
+
 export class Collision {
   private readonly entity: BaseEntity;
   private collisionEntities: BaseEntity[];
@@ -42,7 +47,6 @@ export class Collision {
     left: () => {},
     right: () => {},
   };
-  private isCheckCollisionWithScreenBorders: boolean = false;
   private readonly collisionWithScreenBordersHandlers: ICollisionWithScreenBordersHandlers =
     {
       top: () => {},
@@ -50,6 +54,11 @@ export class Collision {
       left: () => {},
       right: () => {},
     };
+
+  public collisionsIsActive: ICollisionsIsActive = {
+    screenBorders: false,
+    collisionEntities: true,
+  };
 
   constructor(
     entity: BaseEntity,
@@ -67,7 +76,7 @@ export class Collision {
     getEntriesFromObj(collisionWithScreenBordersHandlers).forEach(
       ([key, handler]) => {
         this.collisionWithScreenBordersHandlers[key] = handler;
-        this.isCheckCollisionWithScreenBorders = true;
+        this.collisionsIsActive.screenBorders = true;
       },
     );
   }
@@ -82,10 +91,22 @@ export class Collision {
   }
 
   update() {
-    this.collisionEntities.forEach((collisionEntity) => {
-      const collisionInfo = this.checkCollision(collisionEntity);
+    if (this.collisionsIsActive.collisionEntities) {
+      this.executeCollisionHandlersWithCollisionEntities();
+    }
 
-      if (!collisionInfo.isColliding) return;
+    if (this.collisionsIsActive.screenBorders) {
+      this.executeCollisionHandlersWithScreenBorders();
+    }
+  }
+
+  executeCollisionHandlersWithCollisionEntities() {
+    this.collisionEntities.forEach((collisionEntity) => {
+      const collisionInfo = this.getCollisionInfo(collisionEntity);
+
+      if (!collisionInfo.isColliding) {
+        return;
+      }
 
       const collisionTypes = this.getCollisionType(collisionInfo);
       collisionTypes.forEach((collisionType) => {
@@ -95,9 +116,9 @@ export class Collision {
         );
       });
     });
+  }
 
-    if (!this.isCheckCollisionWithScreenBorders) return;
-
+  executeCollisionHandlersWithScreenBorders() {
     const collisionWithScreenBorderInfo =
       this.checkCollisionWithScreenBorders();
 
@@ -143,7 +164,7 @@ export class Collision {
     return collisionInfo;
   }
 
-  checkCollision(collisionEntity: BaseEntity): ICollisionInfo {
+  getCollisionInfo(collisionEntity: BaseEntity): ICollisionInfo {
     const collisionInfo: ICollisionInfo = {
       top: false,
       bottom: false,
@@ -170,6 +191,8 @@ export class Collision {
     }
 
     this.entity.y = currentY;
+
+    const currentX = this.entity.x;
     this.entity.x = this.entity.prevPoint.x;
     if (!this.isCheckAABB(this.entity, collisionEntity)) {
       collisionInfo.isColliding = true;
@@ -181,6 +204,7 @@ export class Collision {
         return collisionInfo;
       }
     }
+    this.entity.x = currentX;
 
     return collisionInfo;
   }

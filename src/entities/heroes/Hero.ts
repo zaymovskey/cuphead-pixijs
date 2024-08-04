@@ -14,6 +14,7 @@ import {
 export enum EnumHeroStates {
   stay = "stay",
   jump = "jump",
+  fallDown = "fallDown",
 }
 export const movementKeys: Record<string, string[]> = {
   RIGHT: ["ArrowRight", "d", "D", "в", "В"],
@@ -23,7 +24,7 @@ export const movementKeys: Record<string, string[]> = {
 
 export class Hero extends BaseEntity {
   gravity: Gravity = new Gravity(this, 0.2, 2);
-  movement: Movement = new Movement(this, 2);
+  movement: Movement = new Movement(this, 2, 0, 10);
   collisionEntities: BaseEntity[] = [];
   state: EnumHeroStates = EnumHeroStates.stay;
   keyboardProcessor: KeyboardProcessor = new KeyboardProcessor();
@@ -42,6 +43,15 @@ export class Hero extends BaseEntity {
 
   update() {
     this.movement.update();
+
+    if (this.gravity.velocityY < 0) {
+      this.collision!.collisionsIsActive.collisionEntities = false;
+    }
+
+    if (this.gravity.velocityY > 0) {
+      this.collision!.collisionsIsActive.collisionEntities = true;
+      this.state = EnumHeroStates.fallDown;
+    }
   }
 
   setControl() {
@@ -65,6 +75,7 @@ export class Hero extends BaseEntity {
 
     this.keyboardProcessor.setButtonsHandlers(movementKeys.UP, {
       executeDown: () => {
+        if (this.state === EnumHeroStates.fallDown) return;
         this.movement.jump();
       },
     });
@@ -77,7 +88,7 @@ export class Hero extends BaseEntity {
       this.gravity.velocityY = 0;
     };
     collisionHandlers.bottom = (_, collisionEntity) => {
-      this.y = this.y = collisionEntity.y - this.height;
+      this.y = collisionEntity.y - this.height;
       this.gravity.velocityY = 0;
       this.state = EnumHeroStates.stay;
     };
