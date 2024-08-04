@@ -29,6 +29,8 @@ export class Hero extends BaseEntity {
   state: EnumHeroStates = EnumHeroStates.stay;
   keyboardProcessor: KeyboardProcessor = new KeyboardProcessor();
 
+  canJump: boolean = true;
+
   constructor(collisionEntities: BaseEntity[]) {
     super();
 
@@ -75,8 +77,12 @@ export class Hero extends BaseEntity {
 
     this.keyboardProcessor.setButtonsHandlers(movementKeys.UP, {
       executeDown: () => {
-        if (this.state === EnumHeroStates.fallDown) return;
+        if (this.state !== EnumHeroStates.stay || !this.canJump) return;
         this.movement.jump();
+        this.canJump = false;
+      },
+      executeUp: () => {
+        this.canJump = true;
       },
     });
   }
