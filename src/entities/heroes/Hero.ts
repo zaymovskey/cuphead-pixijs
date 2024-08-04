@@ -21,7 +21,7 @@ export const movementKeys: Record<string, string[]> = {
   UP: ["ArrowUp", "w", "W", "ц", "Ц"],
 };
 
-export class CupHead extends BaseEntity {
+export class Hero extends BaseEntity {
   gravity: Gravity = new Gravity(this, 0.2, 2);
   movement: Movement = new Movement(this, 2);
   collisionEntities: BaseEntity[] = [];

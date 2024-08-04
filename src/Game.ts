@@ -1,11 +1,11 @@
 import { Application } from "pixi.js";
-import { CupHead } from "@/entities/heroes/CupHead";
+import { Hero } from "@/entities/heroes/Hero.ts";
 import { Platform } from "@/entities/platforms/Platform";
 import PlatformFactory from "@/entities/platforms/PlatformFactory";
 
 export default class Game {
   private readonly pixiApp: Application;
-  private readonly hero: CupHead;
+  private readonly hero: Hero;
   private readonly platforms: Platform[] = [];
 
   constructor(pixiApp: Application) {
@@ -44,7 +44,7 @@ export default class Game {
       ),
     );
 
-    this.hero = new CupHead(this.platforms);
+    this.hero = new Hero(this.platforms);
     this.hero.position = { x: 200, y: 10 };
     this.pixiApp.stage.addChild(this.hero);
   }
