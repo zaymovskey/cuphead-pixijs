@@ -1,5 +1,5 @@
 import { Application } from "pixi.js";
-import Game from "./Game.ts";
+import Game from "@/Game";
 
 const _pixiApp = new Application();
 
