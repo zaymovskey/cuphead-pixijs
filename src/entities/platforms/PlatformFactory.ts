@@ -1,4 +1,4 @@
-import { IPlatformSize, Platform } from "./Platform.ts";
+import { IPlatformSize, Platform } from "@/entities/platforms/Platform";
 import { Application, PointData } from "pixi.js";
 
 export default class PlatformFactory {

@@ -1,4 +1,4 @@
-import { BaseEntity } from "../entities/BaseEntity.ts";
+import { BaseEntity } from "@/entities/BaseEntity";
 
 type TypeMovement = -1 | 0 | 1;
 

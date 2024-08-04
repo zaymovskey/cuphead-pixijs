@@ -1,15 +1,15 @@
 import { Graphics } from "pixi.js";
-import { BaseEntity } from "../BaseEntity.ts";
-import { Gravity } from "../../engines/Gravity.ts";
-import { Movement } from "../../engines/Movement.ts";
-import { KeyboardProcessor } from "../../engines/KeyboardProcessor.ts";
+import { BaseEntity } from "@/entities/BaseEntity";
+import { Gravity } from "@/engines/Gravity";
+import { Movement } from "@/engines/Movement";
+import { KeyboardProcessor } from "@/engines/KeyboardProcessor";
 import {
   Collision,
   ICollisionHandlers,
   ICollisionWithScreenBordersHandlers,
   TypeCollisionHandler,
   TypeCollisionWithScreenBordersHandler,
-} from "../../engines/Сollision.ts";
+} from "@/engines/Сollision.ts";
 
 export enum EnumHeroStates {
   stay = "stay",

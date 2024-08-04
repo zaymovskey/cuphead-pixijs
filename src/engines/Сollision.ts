@@ -1,6 +1,6 @@
-import { BaseEntity } from "../entities/BaseEntity.ts";
+import { BaseEntity } from "@/entities/BaseEntity.ts";
 import { PointData } from "pixi.js";
-import { getEntriesFromObj } from "../utils/getEntriesFromObj.ts";
+import { getEntriesFromObj } from "@/utils/getEntriesFromObj";
 
 interface ICollisionInfo {
   isColliding: boolean;

@@ -1,5 +1,5 @@
 import { Graphics } from "pixi.js";
-import { BaseEntity } from "../BaseEntity.ts";
+import { BaseEntity } from "@/entities/BaseEntity";
 
 export interface IPlatformSize {
   width: number;

@@ -1,4 +1,4 @@
-import { BaseEntity } from "../entities/BaseEntity.ts";
+import { BaseEntity } from "@/entities/BaseEntity";
 
 export class Gravity {
   private readonly acceleration: number;
