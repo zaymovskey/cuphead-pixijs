@@ -181,6 +181,7 @@ export class Collision {
     this.entity.y = this.entity.prevPoint.y;
     if (!this.isCheckAABB(this.entity, collisionEntity)) {
       collisionInfo.isColliding = true;
+      this.entity.y = currentY;
       if (this.entity.y < collisionEntity.y) {
         collisionInfo.bottom = true;
         return collisionInfo;
@@ -196,14 +197,17 @@ export class Collision {
     this.entity.x = this.entity.prevPoint.x;
     if (!this.isCheckAABB(this.entity, collisionEntity)) {
       collisionInfo.isColliding = true;
+      this.entity.x = currentX;
       if (this.entity.x < collisionEntity.x) {
         collisionInfo.left = true;
         return collisionInfo;
       } else {
+        this.entity.x = currentX;
         collisionInfo.right = true;
         return collisionInfo;
       }
     }
+
     this.entity.x = currentX;
 
     return collisionInfo;

@@ -15,13 +15,13 @@ export default class Game {
 
     this.platforms.push(
       platformFactory.createPlatform(
-        { x: 0, y: window.innerHeight - 170 },
+        { x: 0, y: 700 },
         { width: window.innerWidth, height: 25 },
       ),
     );
     this.platforms.push(
       platformFactory.createPlatform(
-        { x: 400, y: 560 },
+        { x: 400, y: 600 },
         { width: 400, height: 25 },
       ),
     );

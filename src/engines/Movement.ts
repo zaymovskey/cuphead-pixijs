@@ -3,7 +3,7 @@ import { BaseEntity } from "@/entities/BaseEntity";
 type TypeMovement = -1 | 0 | 1;
 
 export class Movement {
-  private velocityX: number;
+  public velocityX: number;
   private readonly maxVelocityX: number;
 
   private readonly jumpAcceleration: number;

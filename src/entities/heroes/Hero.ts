@@ -24,7 +24,7 @@ export const movementKeys: Record<string, string[]> = {
 
 export class Hero extends BaseEntity {
   gravity: Gravity = new Gravity(this, 0.9, 0);
-  movement: Movement = new Movement(this, 6, 0, 23);
+  movement: Movement = new Movement(this, 60, 0, 23);
   collisionEntities: BaseEntity[] = [];
   state: EnumHeroStates = EnumHeroStates.stay;
   keyboardProcessor: KeyboardProcessor = new KeyboardProcessor();
@@ -33,8 +33,6 @@ export class Hero extends BaseEntity {
 
   heroWidth: number = 80;
   heroHeight: number = 100;
-  heroGunWidth: number = 30;
-  heroGunHeight: number = 20;
 
   constructor(collisionEntities: BaseEntity[]) {
     super();
@@ -45,15 +43,9 @@ export class Hero extends BaseEntity {
       .rect(this.x, this.y, this.heroWidth, this.heroHeight)
       .stroke("#66b466");
 
-    const gun = new Graphics()
-      .rect(this.x + 80, this.y + 30, this.heroGunWidth, this.heroGunHeight)
-      .stroke("#66b466");
-
     hero.strokeStyle.width = 2;
-    gun.strokeStyle.width = 2;
 
     this.addChild(hero);
-    this.addChild(gun);
 
     this.setControl();
     this.setCollisionHandlers();
