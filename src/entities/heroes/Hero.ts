@@ -19,25 +19,41 @@ export enum EnumHeroStates {
 export const movementKeys: Record<string, string[]> = {
   RIGHT: ["ArrowRight", "d", "D", "в", "В"],
   LEFT: ["ArrowLeft", "a", "A", "ф", "Ф"],
-  UP: ["ArrowUp", "w", "W", "ц", "Ц"],
+  UP: ["Z", "z", "Я", "я"],
 };
 
 export class Hero extends BaseEntity {
-  gravity: Gravity = new Gravity(this, 0.2, 2);
-  movement: Movement = new Movement(this, 2, 0, 10);
+  gravity: Gravity = new Gravity(this, 0.9, 0);
+  movement: Movement = new Movement(this, 6, 0, 23);
   collisionEntities: BaseEntity[] = [];
   state: EnumHeroStates = EnumHeroStates.stay;
   keyboardProcessor: KeyboardProcessor = new KeyboardProcessor();
 
   canJump: boolean = true;
 
+  heroWidth: number = 80;
+  heroHeight: number = 100;
+  heroGunWidth: number = 30;
+  heroGunHeight: number = 20;
+
   constructor(collisionEntities: BaseEntity[]) {
     super();
 
     this.collisionEntities = collisionEntities;
-    const view = new Graphics().rect(this.x, this.y, 40, 100).stroke("#66b466");
-    view.strokeStyle.width = 2;
-    this.addChild(view);
+
+    const hero = new Graphics()
+      .rect(this.x, this.y, this.heroWidth, this.heroHeight)
+      .stroke("#66b466");
+
+    const gun = new Graphics()
+      .rect(this.x + 80, this.y + 30, this.heroGunWidth, this.heroGunHeight)
+      .stroke("#66b466");
+
+    hero.strokeStyle.width = 2;
+    gun.strokeStyle.width = 2;
+
+    this.addChild(hero);
+    this.addChild(gun);
 
     this.setControl();
     this.setCollisionHandlers();

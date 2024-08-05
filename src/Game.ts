@@ -15,32 +15,14 @@ export default class Game {
 
     this.platforms.push(
       platformFactory.createPlatform(
-        { x: 150, y: 350 },
-        { width: 500, height: 25 },
+        { x: 0, y: window.innerHeight - 170 },
+        { width: window.innerWidth, height: 25 },
       ),
     );
     this.platforms.push(
       platformFactory.createPlatform(
-        { x: 150, y: 500 },
-        { width: 500, height: 25 },
-      ),
-    );
-    this.platforms.push(
-      platformFactory.createPlatform(
-        { x: 550, y: 600 },
-        { width: 500, height: 25 },
-      ),
-    );
-    this.platforms.push(
-      platformFactory.createPlatform(
-        { x: 1070, y: 550 },
-        { width: 500, height: 25 },
-      ),
-    );
-    this.platforms.push(
-      platformFactory.createPlatform(
-        { x: 1070, y: 350 },
-        { width: 500, height: 25 },
+        { x: 400, y: 560 },
+        { width: 400, height: 25 },
       ),
     );
 
