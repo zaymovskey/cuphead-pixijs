@@ -11,7 +11,7 @@ export interface IHitBox {
   height: number;
 }
 
-export abstract class BaseEntity extends Container {
+export abstract class BaseEntity {
   gravity?: Gravity;
   movement?: Movement;
   public collision?: Collision;
@@ -21,25 +21,26 @@ export abstract class BaseEntity extends Container {
     y: 0,
   };
   public hitBox?: IHitBox;
+  public view: Container;
 
-  protected constructor() {
-    super();
+  protected constructor(view: Container) {
+    this.view = view;
   }
 
   protected update() {}
 
   public completeUpdate(): void {
     this.prevPoint = {
-      x: this.x,
-      y: this.y,
+      x: this.view.x,
+      y: this.view.y,
     };
 
     this.gravity?.update();
     this.update();
 
     if (this.hitBox) {
-      this.hitBox.x = this.x;
-      this.hitBox.y = this.y;
+      this.hitBox.x = this.view.x;
+      this.hitBox.y = this.view.y;
     }
 
     this.collision?.update();

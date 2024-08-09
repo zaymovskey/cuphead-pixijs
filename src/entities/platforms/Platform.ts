@@ -1,5 +1,5 @@
 import { BaseEntity } from '@/entities/BaseEntity';
-import { Graphics } from 'pixi.js';
+import { PlatformView } from '@/entities/platforms/PlatformView.ts';
 
 export interface IPlatformSize {
   width: number;
@@ -8,11 +8,6 @@ export interface IPlatformSize {
 
 export class Platform extends BaseEntity {
   constructor(size: IPlatformSize) {
-    super();
-    const view = new Graphics()
-      .rect(this.x, this.y, size.width, size.height)
-      .stroke('#ecec19');
-
-    this.addChild(view);
+    super(new PlatformView(size));
   }
 }

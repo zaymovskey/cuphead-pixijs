@@ -27,8 +27,8 @@ export default class Game {
     );
 
     this.hero = new Hero(this.platforms);
-    this.hero.position = { x: 200, y: 10 };
-    this.pixiApp.stage.addChild(this.hero);
+    this.hero.view.position = { x: 200, y: 10 };
+    this.pixiApp.stage.addChild(this.hero.view);
   }
 
   update() {

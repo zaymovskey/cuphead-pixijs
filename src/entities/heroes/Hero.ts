@@ -7,7 +7,7 @@ import {
   ICollisionWithScreenBordersHandlers,
 } from '@/engines/Сollision.ts';
 import { BaseEntity, IHitBox } from '@/entities/BaseEntity';
-import { Graphics } from 'pixi.js';
+import { HeroView } from '@/entities/heroes/HeroView.ts';
 
 export enum EnumHeroStates {
   stay = 'stay',
@@ -31,8 +31,8 @@ export class Hero extends BaseEntity {
   hitBoxHeight: number = 100;
 
   hitBox: IHitBox = {
-    x: this.x,
-    y: this.y,
+    x: this.view.x,
+    y: this.view.y,
     width: this.hitBoxWidth,
     height: this.hitBoxHeight,
   };
@@ -40,25 +40,9 @@ export class Hero extends BaseEntity {
   isCanJump: boolean = true;
 
   constructor(collisionEntities: BaseEntity[]) {
-    super();
+    super(new HeroView(80, 100));
 
     this.collisionEntities = collisionEntities;
-
-    const hero = new Graphics()
-      .rect(this.x, this.y, this.hitBoxWidth, this.hitBoxHeight)
-      .stroke('#66b466')
-      .rect(
-        this.x + this.hitBoxWidth,
-        this.y + this.hitBoxHeight / 2 - 20 / 2,
-        40,
-        20
-      )
-      .stroke('#66b466');
-
-    this.addChild(hero);
-
-    hero.pivot.x = 40;
-    hero.x = 40;
 
     this.setControl();
     this.setCollisionHandlers();
@@ -111,34 +95,34 @@ export class Hero extends BaseEntity {
   setCollisionHandlers() {
     const collisionHandlers: ICollisionHandlers = {};
     collisionHandlers.bottom = (_, collisionEntity) => {
-      this.y = collisionEntity.y - this.hitBoxHeight;
+      this.view.y = collisionEntity.view.y - this.hitBoxHeight;
       this.gravity.velocityY = 0;
       this.state = EnumHeroStates.stay;
     };
     collisionHandlers.left = (_, collisionEntity) => {
-      this.x = collisionEntity.x - this.hitBoxWidth;
+      this.view.x = collisionEntity.view.x - this.hitBoxWidth;
     };
     collisionHandlers.right = (_, collisionEntity) => {
-      this.x = collisionEntity.x + collisionEntity.width;
+      this.view.x = collisionEntity.view.x + collisionEntity.view.width;
     };
 
     const collisionWithScreenBordersHandlers: ICollisionWithScreenBordersHandlers =
       {};
     collisionWithScreenBordersHandlers.top = () => {
-      this.y = 0;
+      this.view.y = 0;
       this.gravity.velocityY = 0;
     };
     collisionWithScreenBordersHandlers.bottom = () => {
-      this.y = window.innerHeight - this.hitBoxHeight;
+      this.view.y = window.innerHeight - this.hitBoxHeight;
       this.gravity.velocityY = 0;
       this.state = EnumHeroStates.stay;
     };
 
     collisionWithScreenBordersHandlers.left = () => {
-      this.x = 0;
+      this.view.x = 0;
     };
     collisionWithScreenBordersHandlers.right = () => {
-      this.x = window.innerWidth - this.hitBoxWidth;
+      this.view.x = window.innerWidth - this.hitBoxWidth;
     };
 
     this.collision = new Collision(

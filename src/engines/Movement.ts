@@ -33,7 +33,7 @@ export class Movement {
 
   update() {
     this.velocityX = this.movement.x * this.maxVelocityX;
-    this.entity.x += this.velocityX;
+    this.entity.view.x += this.velocityX;
   }
 
   startLeftMove() {

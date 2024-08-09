@@ -10,8 +10,8 @@ export default class PlatformFactory {
 
   createPlatform(position: PointData, size: IPlatformSize) {
     const platform = new Platform(size);
-    platform.position = position;
-    this.pixiApp.stage.addChild(platform);
+    platform.view.position = position;
+    this.pixiApp.stage.addChild(platform.view);
 
     return platform;
   }

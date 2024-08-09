@@ -72,7 +72,7 @@ export class Collision {
     if (entity.hitBox) {
       this.hitBox = entity.hitBox;
     } else {
-      this.hitBox = entity;
+      this.hitBox = entity.view;
     }
 
     this.collisionEntities = collisionEntities;
@@ -181,16 +181,16 @@ export class Collision {
       isColliding: false,
     };
 
-    if (!this.isCheckAABB(this.hitBox, collisionEntity)) {
+    if (!this.isCheckAABB(this.hitBox, collisionEntity.view)) {
       return collisionInfo;
     }
 
     const currentY = this.hitBox.y;
     this.hitBox.y = this.entity.prevPoint.y;
-    if (!this.isCheckAABB(this.hitBox, collisionEntity)) {
+    if (!this.isCheckAABB(this.hitBox, collisionEntity.view)) {
       collisionInfo.isColliding = true;
       this.hitBox.y = currentY;
-      if (this.hitBox.y < collisionEntity.y) {
+      if (this.hitBox.y < collisionEntity.view.y) {
         collisionInfo.bottom = true;
         return collisionInfo;
       } else {
@@ -203,10 +203,10 @@ export class Collision {
 
     const currentX = this.hitBox.x;
     this.hitBox.x = this.entity.prevPoint.x;
-    if (!this.isCheckAABB(this.hitBox, collisionEntity)) {
+    if (!this.isCheckAABB(this.hitBox, collisionEntity.view)) {
       collisionInfo.isColliding = true;
       this.hitBox.x = currentX;
-      if (this.hitBox.x < collisionEntity.x) {
+      if (this.hitBox.x < collisionEntity.view.x) {
         collisionInfo.left = true;
         return collisionInfo;
       } else {
