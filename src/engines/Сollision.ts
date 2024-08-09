@@ -1,4 +1,4 @@
-import { BaseEntity } from "@/entities/BaseEntity.ts";
+import { BaseEntity, IHitBox } from "@/entities/BaseEntity.ts";
 import { PointData } from "pixi.js";
 import { getEntriesFromObj } from "@/utils/getEntriesFromObj";
 
@@ -40,6 +40,7 @@ interface ICollisionsIsActive {
 
 export class Collision {
   private readonly entity: BaseEntity;
+  private readonly hitBox: IHitBox;
   private collisionEntities: BaseEntity[];
   private readonly collisionHandlers: ICollisionHandlers = {
     top: () => {},
@@ -67,6 +68,13 @@ export class Collision {
     collisionWithScreenBordersHandlers?: ICollisionWithScreenBordersHandlers,
   ) {
     this.entity = entity;
+
+    if (entity.hitBox) {
+      this.hitBox = entity.hitBox;
+    } else {
+      this.hitBox = entity;
+    }
+
     this.collisionEntities = collisionEntities;
     getEntriesFromObj(collisionHandlers).forEach(([key, handler]) => {
       this.collisionHandlers[key] = handler;
@@ -141,22 +149,22 @@ export class Collision {
       isColliding: false,
     };
 
-    if (this.entity.y + this.entity.height > window.innerHeight) {
+    if (this.hitBox.y + this.hitBox.height > window.innerHeight) {
       collisionInfo.bottom = true;
       collisionInfo.isColliding = true;
     }
 
-    if (this.entity.y < 0) {
+    if (this.hitBox.y < 0) {
       collisionInfo.top = true;
       collisionInfo.isColliding = true;
     }
 
-    if (this.entity.x + this.entity.width > window.innerWidth) {
+    if (this.hitBox.x + this.hitBox.width > window.innerWidth) {
       collisionInfo.right = true;
       collisionInfo.isColliding = true;
     }
 
-    if (this.entity.x < 0) {
+    if (this.hitBox.x < 0) {
       collisionInfo.left = true;
       collisionInfo.isColliding = true;
     }
@@ -173,16 +181,16 @@ export class Collision {
       isColliding: false,
     };
 
-    if (!this.isCheckAABB(this.entity, collisionEntity)) {
+    if (!this.isCheckAABB(this.hitBox, collisionEntity)) {
       return collisionInfo;
     }
 
-    const currentY = this.entity.y;
-    this.entity.y = this.entity.prevPoint.y;
-    if (!this.isCheckAABB(this.entity, collisionEntity)) {
+    const currentY = this.hitBox.y;
+    this.hitBox.y = this.entity.prevPoint.y;
+    if (!this.isCheckAABB(this.hitBox, collisionEntity)) {
       collisionInfo.isColliding = true;
-      this.entity.y = currentY;
-      if (this.entity.y < collisionEntity.y) {
+      this.hitBox.y = currentY;
+      if (this.hitBox.y < collisionEntity.y) {
         collisionInfo.bottom = true;
         return collisionInfo;
       } else {
@@ -191,29 +199,29 @@ export class Collision {
       }
     }
 
-    this.entity.y = currentY;
+    this.hitBox.y = currentY;
 
-    const currentX = this.entity.x;
-    this.entity.x = this.entity.prevPoint.x;
-    if (!this.isCheckAABB(this.entity, collisionEntity)) {
+    const currentX = this.hitBox.x;
+    this.hitBox.x = this.entity.prevPoint.x;
+    if (!this.isCheckAABB(this.hitBox, collisionEntity)) {
       collisionInfo.isColliding = true;
-      this.entity.x = currentX;
-      if (this.entity.x < collisionEntity.x) {
+      this.hitBox.x = currentX;
+      if (this.hitBox.x < collisionEntity.x) {
         collisionInfo.left = true;
         return collisionInfo;
       } else {
-        this.entity.x = currentX;
+        this.hitBox.x = currentX;
         collisionInfo.right = true;
         return collisionInfo;
       }
     }
 
-    this.entity.x = currentX;
+    this.hitBox.x = currentX;
 
     return collisionInfo;
   }
 
-  isCheckAABB(entity: BaseEntity, collisionEntity: BaseEntity) {
+  isCheckAABB(entity: IHitBox, collisionEntity: IHitBox) {
     return (
       entity.x + entity.width > collisionEntity.x &&
       entity.x < collisionEntity.x + collisionEntity.width &&

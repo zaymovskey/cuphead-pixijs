@@ -4,7 +4,7 @@ import { Collision } from "@/engines/Сollision.ts";
 import { EnumHeroStates } from "@/entities/heroes/Hero.ts";
 import { Movement } from "@/engines/Movement";
 
-export interface IBounds {
+export interface IHitBox {
   x: number;
   y: number;
   width: number;
@@ -17,7 +17,7 @@ export abstract class BaseEntity extends Container {
   public collision?: Collision;
   public state?: string | EnumHeroStates;
   public prevPoint: PointData = { x: 0, y: 0 };
-  protected bounds?: IBounds;
+  public hitBox?: IHitBox;
 
   protected constructor() {
     super();
@@ -30,6 +30,12 @@ export abstract class BaseEntity extends Container {
 
     this.gravity?.update();
     this.update();
+
+    if (this.hitBox) {
+      this.hitBox.x = this.x;
+      this.hitBox.y = this.y;
+    }
+
     this.collision?.update();
   }
 }
