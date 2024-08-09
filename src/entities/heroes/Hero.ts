@@ -6,7 +6,7 @@ import {
   ICollisionHandlers,
   ICollisionWithScreenBordersHandlers,
 } from '@/engines/Сollision.ts';
-import { BaseEntity, IHitBox } from '@/entities/BaseEntity';
+import { BaseEntity } from '@/entities/BaseEntity';
 import { HeroView } from '@/entities/heroes/HeroView.ts';
 
 export enum EnumHeroStates {
@@ -27,20 +27,10 @@ export class Hero extends BaseEntity {
   state: EnumHeroStates = EnumHeroStates.stay;
   keyboardProcessor: KeyboardProcessor = new KeyboardProcessor();
 
-  hitBoxWidth: number = 80;
-  hitBoxHeight: number = 100;
-
-  hitBox: IHitBox = {
-    x: this.view.x,
-    y: this.view.y,
-    width: this.hitBoxWidth,
-    height: this.hitBoxHeight,
-  };
-
   isCanJump: boolean = true;
 
   constructor(collisionEntities: BaseEntity[]) {
-    super(new HeroView(80, 100));
+    super(new HeroView());
 
     this.collisionEntities = collisionEntities;
 
@@ -95,12 +85,12 @@ export class Hero extends BaseEntity {
   setCollisionHandlers() {
     const collisionHandlers: ICollisionHandlers = {};
     collisionHandlers.bottom = (_, collisionEntity) => {
-      this.view.y = collisionEntity.view.y - this.hitBoxHeight;
+      this.view.y = collisionEntity.view.y - this.view.hitBox.height;
       this.gravity.velocityY = 0;
       this.state = EnumHeroStates.stay;
     };
     collisionHandlers.left = (_, collisionEntity) => {
-      this.view.x = collisionEntity.view.x - this.hitBoxWidth;
+      this.view.x = collisionEntity.view.x - this.view.hitBox.width;
     };
     collisionHandlers.right = (_, collisionEntity) => {
       this.view.x = collisionEntity.view.x + collisionEntity.view.width;
@@ -113,7 +103,7 @@ export class Hero extends BaseEntity {
       this.gravity.velocityY = 0;
     };
     collisionWithScreenBordersHandlers.bottom = () => {
-      this.view.y = window.innerHeight - this.hitBoxHeight;
+      this.view.y = window.innerHeight - this.view.hitBox.height;
       this.gravity.velocityY = 0;
       this.state = EnumHeroStates.stay;
     };
@@ -122,7 +112,7 @@ export class Hero extends BaseEntity {
       this.view.x = 0;
     };
     collisionWithScreenBordersHandlers.right = () => {
-      this.view.x = window.innerWidth - this.hitBoxWidth;
+      this.view.x = window.innerWidth - this.view.hitBox.width;
     };
 
     this.collision = new Collision(

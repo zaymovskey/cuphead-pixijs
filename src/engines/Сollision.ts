@@ -1,4 +1,5 @@
-import { BaseEntity, IHitBox } from '@/entities/BaseEntity.ts';
+import { BaseEntity } from '@/entities/BaseEntity.ts';
+import { IHitBox } from '@/entities/BaseView.ts';
 import { getEntriesFromObj } from '@/utils/getEntriesFromObj';
 import { PointData } from 'pixi.js';
 
@@ -69,8 +70,8 @@ export class Collision {
   ) {
     this.entity = entity;
 
-    if (entity.hitBox) {
-      this.hitBox = entity.hitBox;
+    if (entity.view.hitBox) {
+      this.hitBox = entity.view.hitBox;
     } else {
       this.hitBox = entity.view;
     }
@@ -119,7 +120,7 @@ export class Collision {
       const collisionTypes = this.getCollisionType(collisionInfo);
       collisionTypes.forEach((collisionType) => {
         this.collisionHandlers[collisionType]?.(
-          this.entity.prevPoint,
+          this.entity.view.prevPoint,
           collisionEntity
         );
       });
@@ -135,7 +136,7 @@ export class Collision {
     const collisionTypes = this.getCollisionType(collisionWithScreenBorderInfo);
     collisionTypes.forEach((collisionType) => {
       this.collisionWithScreenBordersHandlers[collisionType]?.(
-        this.entity.prevPoint
+        this.entity.view.prevPoint
       );
     });
   }
@@ -186,7 +187,7 @@ export class Collision {
     }
 
     const currentY = this.hitBox.y;
-    this.hitBox.y = this.entity.prevPoint.y;
+    this.hitBox.y = this.entity.view.prevPoint.y;
     if (!this.isCheckAABB(this.hitBox, collisionEntity.view)) {
       collisionInfo.isColliding = true;
       this.hitBox.y = currentY;
@@ -202,7 +203,7 @@ export class Collision {
     this.hitBox.y = currentY;
 
     const currentX = this.hitBox.x;
-    this.hitBox.x = this.entity.prevPoint.x;
+    this.hitBox.x = this.entity.view.prevPoint.x;
     if (!this.isCheckAABB(this.hitBox, collisionEntity.view)) {
       collisionInfo.isColliding = true;
       this.hitBox.x = currentX;

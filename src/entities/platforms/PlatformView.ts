@@ -1,7 +1,8 @@
+import { BaseView } from '@/entities/BaseView.ts';
 import { IPlatformSize } from '@/entities/platforms/Platform.ts';
-import { Container, Graphics } from 'pixi.js';
+import { Graphics } from 'pixi.js';
 
-export class PlatformView extends Container {
+export class PlatformView extends BaseView {
   constructor(size: IPlatformSize) {
     super();
 
