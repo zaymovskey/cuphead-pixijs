@@ -1,5 +1,5 @@
 import { Graphics } from "pixi.js";
-import { BaseEntity } from "@/entities/BaseEntity";
+import { BaseEntity, IBounds } from "@/entities/BaseEntity";
 import { Gravity } from "@/engines/Gravity";
 import { Movement } from "@/engines/Movement";
 import { KeyboardProcessor } from "@/engines/KeyboardProcessor";
@@ -7,8 +7,6 @@ import {
   Collision,
   ICollisionHandlers,
   ICollisionWithScreenBordersHandlers,
-  TypeCollisionHandler,
-  TypeCollisionWithScreenBordersHandler,
 } from "@/engines/Сollision.ts";
 
 export enum EnumHeroStates {
@@ -24,15 +22,22 @@ export const movementKeys: Record<string, string[]> = {
 
 export class Hero extends BaseEntity {
   gravity: Gravity = new Gravity(this, 0.9, 0);
-  movement: Movement = new Movement(this, 60, 0, 23);
+  movement: Movement = new Movement(this, 6, 0, 23);
   collisionEntities: BaseEntity[] = [];
   state: EnumHeroStates = EnumHeroStates.stay;
   keyboardProcessor: KeyboardProcessor = new KeyboardProcessor();
 
-  canJump: boolean = true;
-
   heroWidth: number = 80;
   heroHeight: number = 100;
+
+  bounds: IBounds = {
+    x: 0,
+    y: 0,
+    width: this.heroWidth,
+    height: this.heroHeight,
+  };
+
+  isCanJump: boolean = true;
 
   constructor(collisionEntities: BaseEntity[]) {
     super();
@@ -85,48 +90,48 @@ export class Hero extends BaseEntity {
 
     this.keyboardProcessor.setButtonsHandlers(movementKeys.UP, {
       executeDown: () => {
-        if (this.state !== EnumHeroStates.stay || !this.canJump) return;
+        if (this.state !== EnumHeroStates.stay || !this.isCanJump) return;
         this.movement.jump();
-        this.canJump = false;
+        this.isCanJump = false;
       },
       executeUp: () => {
-        this.canJump = true;
+        this.isCanJump = true;
       },
     });
   }
 
   setCollisionHandlers() {
     const collisionHandlers: ICollisionHandlers = {};
-    collisionHandlers.top = (prevPoint, _) => {
-      this.y = prevPoint.y;
-      this.gravity.velocityY = 0;
-    };
     collisionHandlers.bottom = (_, collisionEntity) => {
       this.y = collisionEntity.y - this.height;
       this.gravity.velocityY = 0;
       this.state = EnumHeroStates.stay;
     };
-    const collisionHandlerX: TypeCollisionHandler = (prevPoint, _) => {
-      this.x = prevPoint.x;
+    collisionHandlers.left = (_, collisionEntity) => {
+      this.x = collisionEntity.x - this.width;
     };
-    collisionHandlers.right = collisionHandlerX;
-    collisionHandlers.left = collisionHandlerX;
+    collisionHandlers.right = (_, collisionEntity) => {
+      this.x = collisionEntity.x + collisionEntity.width;
+    };
 
     const collisionWithScreenBordersHandlers: ICollisionWithScreenBordersHandlers =
       {};
+    collisionWithScreenBordersHandlers.top = () => {
+      this.y = 0;
+      this.gravity.velocityY = 0;
+    };
     collisionWithScreenBordersHandlers.bottom = () => {
       this.y = window.innerHeight - this.height;
       this.gravity.velocityY = 0;
       this.state = EnumHeroStates.stay;
     };
-    const collisionWithScreenBordersHandlerX: TypeCollisionWithScreenBordersHandler =
-      (prevPoint) => {
-        this.x = prevPoint.x;
-      };
-    collisionWithScreenBordersHandlers.left =
-      collisionWithScreenBordersHandlerX;
-    collisionWithScreenBordersHandlers.right =
-      collisionWithScreenBordersHandlerX;
+
+    collisionWithScreenBordersHandlers.left = () => {
+      this.x = 0;
+    };
+    collisionWithScreenBordersHandlers.right = () => {
+      this.x = window.innerWidth - this.width;
+    };
 
     this.collision = new Collision(
       this,

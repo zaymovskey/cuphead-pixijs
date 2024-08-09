@@ -4,12 +4,20 @@ import { Collision } from "@/engines/Сollision.ts";
 import { EnumHeroStates } from "@/entities/heroes/Hero.ts";
 import { Movement } from "@/engines/Movement";
 
+export interface IBounds {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 export abstract class BaseEntity extends Container {
   gravity?: Gravity;
   movement?: Movement;
   public collision?: Collision;
   public state?: string | EnumHeroStates;
   public prevPoint: PointData = { x: 0, y: 0 };
+  protected bounds?: IBounds;
 
   protected constructor() {
     super();
