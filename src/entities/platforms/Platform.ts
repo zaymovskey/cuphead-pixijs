@@ -13,7 +13,6 @@ export class Platform extends BaseEntity {
       .rect(this.x, this.y, size.width, size.height)
       .stroke('#ecec19');
 
-    view.strokeStyle.width = 2;
     this.addChild(view);
   }
 }

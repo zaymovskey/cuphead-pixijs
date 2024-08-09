@@ -27,17 +27,15 @@ export class Hero extends BaseEntity {
   state: EnumHeroStates = EnumHeroStates.stay;
   keyboardProcessor: KeyboardProcessor = new KeyboardProcessor();
 
-  heroWidth: number = 80;
-  heroHeight: number = 100;
+  hitBoxWidth: number = 80;
+  hitBoxHeight: number = 100;
 
   hitBox: IHitBox = {
     x: this.x,
     y: this.y,
-    width: this.heroWidth,
-    height: this.heroHeight,
+    width: this.hitBoxWidth,
+    height: this.hitBoxHeight,
   };
-
-  borderWidth: number = 2;
 
   isCanJump: boolean = true;
 
@@ -47,22 +45,20 @@ export class Hero extends BaseEntity {
     this.collisionEntities = collisionEntities;
 
     const hero = new Graphics()
-      .rect(this.x, this.y, this.heroWidth, this.heroHeight - this.borderWidth)
-      .stroke('#66b466');
-    const gun = new Graphics()
+      .rect(this.x, this.y, this.hitBoxWidth, this.hitBoxHeight)
+      .stroke('#66b466')
       .rect(
-        this.x + this.heroWidth,
-        this.y + this.heroHeight / 2 - 20 / 2,
+        this.x + this.hitBoxWidth,
+        this.y + this.hitBoxHeight / 2 - 20 / 2,
         40,
         20
       )
       .stroke('#66b466');
 
-    hero.strokeStyle.width = this.borderWidth;
-    gun.strokeStyle.width = this.borderWidth;
-
     this.addChild(hero);
-    this.addChild(gun);
+
+    hero.pivot.x = 40;
+    hero.x = 40;
 
     this.setControl();
     this.setCollisionHandlers();
@@ -115,12 +111,12 @@ export class Hero extends BaseEntity {
   setCollisionHandlers() {
     const collisionHandlers: ICollisionHandlers = {};
     collisionHandlers.bottom = (_, collisionEntity) => {
-      this.y = collisionEntity.y - this.heroHeight;
+      this.y = collisionEntity.y - this.hitBoxHeight;
       this.gravity.velocityY = 0;
       this.state = EnumHeroStates.stay;
     };
     collisionHandlers.left = (_, collisionEntity) => {
-      this.x = collisionEntity.x - this.heroWidth;
+      this.x = collisionEntity.x - this.hitBoxWidth;
     };
     collisionHandlers.right = (_, collisionEntity) => {
       this.x = collisionEntity.x + collisionEntity.width;
@@ -133,7 +129,7 @@ export class Hero extends BaseEntity {
       this.gravity.velocityY = 0;
     };
     collisionWithScreenBordersHandlers.bottom = () => {
-      this.y = window.innerHeight - this.heroHeight;
+      this.y = window.innerHeight - this.hitBoxHeight;
       this.gravity.velocityY = 0;
       this.state = EnumHeroStates.stay;
     };
@@ -142,7 +138,7 @@ export class Hero extends BaseEntity {
       this.x = 0;
     };
     collisionWithScreenBordersHandlers.right = () => {
-      this.x = window.innerWidth - this.heroWidth;
+      this.x = window.innerWidth - this.hitBoxWidth;
     };
 
     this.collision = new Collision(
