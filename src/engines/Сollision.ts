@@ -40,7 +40,6 @@ interface ICollisionsIsActive {
 }
 
 export class Collision {
-  private readonly entity: BaseEntity;
   private readonly entityHitBox: IHitBox;
   private collisionEntities: BaseEntity[];
   private readonly collisionHandlers: ICollisionHandlers = {
@@ -68,13 +67,7 @@ export class Collision {
     collisionHandlers: ICollisionHandlers,
     collisionWithScreenBordersHandlers?: ICollisionWithScreenBordersHandlers
   ) {
-    this.entity = entity;
-
-    if (entity.view.hitBox) {
-      this.entityHitBox = entity.view.hitBox;
-    } else {
-      this.entityHitBox = entity.view;
-    }
+    this.entityHitBox = entity.view.hitBox;
 
     this.collisionEntities = collisionEntities;
     getEntriesFromObj(collisionHandlers).forEach(([key, handler]) => {
@@ -120,7 +113,7 @@ export class Collision {
       const collisionTypes = this.getCollisionType(collisionInfo);
       collisionTypes.forEach((collisionType) => {
         this.collisionHandlers[collisionType]?.(
-          this.entity.view.prevPoint,
+          this.entityHitBox.prevPoint,
           collisionEntity
         );
       });
@@ -136,7 +129,7 @@ export class Collision {
     const collisionTypes = this.getCollisionType(collisionWithScreenBorderInfo);
     collisionTypes.forEach((collisionType) => {
       this.collisionWithScreenBordersHandlers[collisionType]?.(
-        this.entity.view.prevPoint
+        this.entityHitBox.prevPoint
       );
     });
   }
@@ -187,7 +180,7 @@ export class Collision {
     }
 
     const currentY = this.entityHitBox.y;
-    this.entityHitBox.y = this.entity.view.prevPoint.y;
+    this.entityHitBox.y = this.entityHitBox.prevPoint.y;
     if (!this.isCheckAABB(this.entityHitBox, collisionEntity.view)) {
       collisionInfo.isColliding = true;
       this.entityHitBox.y = currentY;
@@ -203,7 +196,7 @@ export class Collision {
     this.entityHitBox.y = currentY;
 
     const currentX = this.entityHitBox.x;
-    this.entityHitBox.x = this.entity.view.prevPoint.x;
+    this.entityHitBox.x = this.entityHitBox.prevPoint.x;
     if (!this.isCheckAABB(this.entityHitBox, collisionEntity.view)) {
       collisionInfo.isColliding = true;
       this.entityHitBox.x = currentX;

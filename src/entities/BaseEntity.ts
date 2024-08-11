@@ -19,7 +19,7 @@ export abstract class BaseEntity {
   protected update() {}
 
   public completeUpdate(): void {
-    this.view.prevPoint = {
+    this.view.hitBox.prevPoint = {
       x: this.view.x,
       y: this.view.y,
     };

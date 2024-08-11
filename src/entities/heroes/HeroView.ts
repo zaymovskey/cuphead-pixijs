@@ -15,6 +15,10 @@ export class HeroView extends BaseView {
     y: this.y,
     width: this.heroHitBoxWidth,
     height: this.heroHitBoxHeight,
+    prevPoint: {
+      x: this.x,
+      y: this.y,
+    },
   };
 
   constructor() {
