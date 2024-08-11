@@ -1,10 +1,14 @@
 import { getEntriesFromObj } from '@/utils/getEntriesFromObj.ts';
 import { Container, Graphics, PointData } from 'pixi.js';
 
-export interface IStm<States extends string | number | symbol> {
-  currentState: States | 'default';
+type TypeStmStatesWithDefault<States extends string = string> =
+  | States
+  | 'default';
+
+export interface IStm<States extends string = string> {
+  currentState: TypeStmStatesWithDefault<States>;
   states: {
-    [key in States | 'default']: {
+    [key in TypeStmStatesWithDefault<States>]: {
       image: Graphics;
       hitBoxSize?: { width: number; height: number };
     };
@@ -20,7 +24,7 @@ export interface IHitBox {
 }
 
 export abstract class BaseView<
-  States extends string | number | symbol = string | number | symbol,
+  States extends string | 'default' = string,
 > extends Container {
   DEFAULT_STROKE_WIDTH = 4;
 
@@ -50,7 +54,10 @@ export abstract class BaseView<
     this.rootNode = rootNode;
   }
 
-  toState(newStateName: States | 'default', changeHitBox: boolean = true) {
+  toState(
+    newStateName: TypeStmStatesWithDefault<States>,
+    changeHitBox: boolean = true
+  ) {
     if (
       !this.stateMachine ||
       (newStateName === this.stateMachine.currentState &&
