@@ -1,8 +1,9 @@
-import { DEFAULT_STROKE_WIDTH } from '@/consts/global';
-import { BaseView, IHitBox } from '@/entities/BaseView';
-import { Graphics } from 'pixi.js';
+import { BaseView, IHitBox, IStm } from '@/entities/BaseView';
+import { EnumHeroStates } from '@/entities/hero/Hero';
+import { createHeroStateMachine } from '@/entities/hero/utils/createHeroStateMachine';
+import { Container, Graphics } from 'pixi.js';
 
-export class HeroView extends BaseView {
+export class HeroView extends BaseView<EnumHeroStates> {
   heroHitBoxWidth: number = 65;
   heroHitBoxHeight: number = 150;
   heroHitBoxColor: string = '#ecec19';
@@ -22,44 +23,51 @@ export class HeroView extends BaseView {
     },
   };
 
+  stateMachine: IStm<EnumHeroStates> = createHeroStateMachine(this);
+
+  rootNode: Container = new Container();
+
   constructor() {
     super();
 
-    const hero = this.getImage({ shootAngle: -90 });
+    this.setStatesImages(this.stateMachine.states);
+    this.rootNode.pivot.x = this.heroHitBoxWidth / 2;
+    this.rootNode.x = this.heroHitBoxWidth / 2;
 
-    this.addChild(hero);
-
-    hero.pivot.x = this.heroHitBoxWidth / 2;
-    hero.x = this.heroHitBoxWidth / 2;
-
-    const heroPivot = new Graphics()
-      .circle(hero.pivot.x, hero.pivot.y, 3)
-      .fill('red');
-
-    hero.addChild(heroPivot);
+    this.addChild(this.rootNode);
   }
 
-  getImage(settings?: { shootAngle?: number; tilt?: boolean }) {
+  getImage(settings?: {
+    shootAngle?: number;
+    tilt?: boolean;
+    width?: number;
+    height?: number;
+  }) {
     const hero = new Graphics()
-      .rect(this.x, this.y, this.heroHitBoxWidth, this.heroHitBoxHeight)
+      .rect(
+        this.x,
+        this.y,
+        settings?.width || this.heroHitBoxWidth,
+        settings?.height || this.heroHitBoxHeight
+      )
       .stroke(this.heroHitBoxColor);
 
-    hero.strokeStyle.width = DEFAULT_STROKE_WIDTH;
+    hero.strokeStyle.width = this.DEFAULT_STROKE_WIDTH;
 
     if (!settings) return hero;
 
-    if (settings.shootAngle) {
+    if (settings.shootAngle !== undefined) {
       const gun = new Graphics()
         .rect(0, 0, this.gunWidth, this.gunHeight)
         .stroke(this.gunColor);
 
-      gun.strokeStyle.width = DEFAULT_STROKE_WIDTH;
+      gun.strokeStyle.width = this.DEFAULT_STROKE_WIDTH;
 
       gun.pivot.y = this.gunHeight / 2;
       gun.pivot.x = this.gunWidth / 4;
 
       gun.x = this.heroHitBoxWidth - this.heroHitBoxWidth / 7;
-      gun.y = this.heroHitBoxHeight / 3;
+      gun.y = (settings?.height || this.heroHitBoxHeight) / 2;
 
       const gunPivot = new Graphics()
         .circle(gun.pivot.x, gun.pivot.y, 2)

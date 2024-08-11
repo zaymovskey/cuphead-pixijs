@@ -1,4 +1,3 @@
-import { DEFAULT_STROKE_WIDTH } from '@/consts/global';
 import { BaseView, IHitBox } from '@/entities/BaseView';
 import { IPlatformSize } from '@/entities/platforms/Platform';
 import { Graphics } from 'pixi.js';
@@ -27,7 +26,7 @@ export class PlatformView extends BaseView {
       .rect(this.x, this.y, size.width, size.height)
       .stroke(this.platformColor);
 
-    platform.strokeStyle.width = DEFAULT_STROKE_WIDTH;
+    platform.strokeStyle.width = this.DEFAULT_STROKE_WIDTH;
 
     this.addChild(platform);
   }

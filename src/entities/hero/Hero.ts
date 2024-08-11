@@ -12,9 +12,24 @@ import { PointData } from 'pixi.js';
 
 export enum EnumHeroStates {
   stay = 'stay',
+  stayShootStraight = 'stayShootStraight',
+  stayShootUp = 'stayShootUp',
+  stayShootDown = 'stayShootDown',
+  stayShootDiagonallyUp = 'stayShootDiagonallyUp',
+  stayShootDiagonallyDown = 'stayShootDiagonallyDown',
+
+  run = 'run',
+  runShootStraight = 'runShootStraight',
+  runShootUp = 'runShootUp',
+  runShootDiagonallyUp = 'runShootDiagonallyUp',
+
+  down = 'down',
+  downShoot = 'downShoot',
+
   jump = 'jump',
   fallDown = 'fallDown',
 }
+
 export const movementKeys: Record<string, string[]> = {
   RIGHT: ['ArrowRight', 'd', 'D', 'в', 'В'],
   LEFT: ['ArrowLeft', 'a', 'A', 'ф', 'Ф'],

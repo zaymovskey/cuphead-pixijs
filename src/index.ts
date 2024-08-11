@@ -1,11 +1,10 @@
 import Game from '@/Game';
-import { DEFAULT_BACKGROUND_COLOR } from '@/consts/global.ts';
 import { Application } from 'pixi.js';
 
 const _pixiApp = new Application();
 
 await _pixiApp.init({
-  backgroundColor: DEFAULT_BACKGROUND_COLOR,
+  backgroundColor: '#2e2e2e',
   width: window.innerWidth,
   height: window.innerHeight + 1,
 });
