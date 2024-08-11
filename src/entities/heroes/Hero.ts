@@ -22,7 +22,7 @@ export const movementKeys: Record<string, string[]> = {
 
 export class Hero extends BaseEntity {
   gravity: Gravity = new Gravity(this, 0.9, 0);
-  movement: Movement = new Movement(this, 10, 0, 23);
+  movement: Movement = new Movement(this, 9, 0, 23);
   collisionEntities: BaseEntity[] = [];
   state: EnumHeroStates = EnumHeroStates.stay;
   keyboardProcessor: KeyboardProcessor = new KeyboardProcessor();
