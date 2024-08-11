@@ -84,35 +84,35 @@ export class Hero extends BaseEntity {
 
   setCollisionHandlers() {
     const collisionHandlers: ICollisionHandlers = {};
-    collisionHandlers.bottom = (_, collisionEntity) => {
-      this.view.y = collisionEntity.view.y - this.view.hitBox.height;
+    collisionHandlers.bottom = (_, collisionEntityHB) => {
+      this.view.hitBox.y = collisionEntityHB.y - this.view.hitBox.height;
       this.gravity.velocityY = 0;
       this.state = EnumHeroStates.stay;
     };
-    collisionHandlers.left = (_, collisionEntity) => {
-      this.view.x = collisionEntity.view.x - this.view.hitBox.width;
+    collisionHandlers.left = (_, collisionEntityHB) => {
+      this.view.hitBox.x = collisionEntityHB.x - this.view.hitBox.width;
     };
-    collisionHandlers.right = (_, collisionEntity) => {
-      this.view.x = collisionEntity.view.x + collisionEntity.view.width;
+    collisionHandlers.right = (_, collisionEntityHB) => {
+      this.view.hitBox.x = collisionEntityHB.x + collisionEntityHB.width;
     };
 
     const collisionWithScreenBordersHandlers: ICollisionWithScreenBordersHandlers =
       {};
     collisionWithScreenBordersHandlers.top = () => {
-      this.view.y = 0;
+      this.view.hitBox.y = 0;
       this.gravity.velocityY = 0;
     };
     collisionWithScreenBordersHandlers.bottom = () => {
-      this.view.y = window.innerHeight - this.view.hitBox.height;
+      this.view.hitBox.y = window.innerHeight - this.view.hitBox.height;
       this.gravity.velocityY = 0;
       this.state = EnumHeroStates.stay;
     };
 
     collisionWithScreenBordersHandlers.left = () => {
-      this.view.x = 0;
+      this.view.hitBox.x = 0;
     };
     collisionWithScreenBordersHandlers.right = () => {
-      this.view.x = window.innerWidth - this.view.hitBox.width;
+      this.view.hitBox.x = window.innerWidth - this.view.hitBox.width;
     };
 
     this.collision = new Collision(

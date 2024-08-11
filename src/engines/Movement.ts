@@ -33,7 +33,7 @@ export class Movement {
 
   update() {
     this.velocityX = this.movement.x * this.maxVelocityX;
-    this.entity.view.x += this.velocityX;
+    this.entity.view.hitBox.x += this.velocityX;
   }
 
   startLeftMove() {

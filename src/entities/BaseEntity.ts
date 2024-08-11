@@ -20,18 +20,16 @@ export abstract class BaseEntity {
 
   public completeUpdate(): void {
     this.view.hitBox.prevPoint = {
-      x: this.view.x,
-      y: this.view.y,
+      x: this.view.hitBox.x,
+      y: this.view.hitBox.y,
     };
 
     this.gravity?.update();
     this.update();
 
-    if (this.view.hitBox) {
-      this.view.hitBox.x = this.view.x;
-      this.view.hitBox.y = this.view.y;
-    }
-
     this.collision?.update();
+
+    this.view.x = this.view.hitBox.x;
+    this.view.y = this.view.hitBox.y;
   }
 }

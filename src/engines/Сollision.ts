@@ -13,7 +13,7 @@ interface ICollisionInfo {
 
 export type TypeCollisionHandler = (
   prevPoint: PointData,
-  collisionEntity: BaseEntity
+  collisionEntityHB: IHitBox
 ) => void;
 
 export type TypeCollisionWithScreenBordersHandler = (
@@ -114,7 +114,7 @@ export class Collision {
       collisionTypes.forEach((collisionType) => {
         this.collisionHandlers[collisionType]?.(
           this.entityHitBox.prevPoint,
-          collisionEntity
+          collisionEntity.view.hitBox
         );
       });
     });
@@ -175,16 +175,16 @@ export class Collision {
       isColliding: false,
     };
 
-    if (!this.isCheckAABB(this.entityHitBox, collisionEntity.view)) {
+    if (!this.isCheckAABB(this.entityHitBox, collisionEntity.view.hitBox)) {
       return collisionInfo;
     }
 
     const currentY = this.entityHitBox.y;
     this.entityHitBox.y = this.entityHitBox.prevPoint.y;
-    if (!this.isCheckAABB(this.entityHitBox, collisionEntity.view)) {
+    if (!this.isCheckAABB(this.entityHitBox, collisionEntity.view.hitBox)) {
       collisionInfo.isColliding = true;
       this.entityHitBox.y = currentY;
-      if (this.entityHitBox.y < collisionEntity.view.y) {
+      if (this.entityHitBox.y < collisionEntity.view.hitBox.y) {
         collisionInfo.bottom = true;
         return collisionInfo;
       } else {
@@ -197,10 +197,10 @@ export class Collision {
 
     const currentX = this.entityHitBox.x;
     this.entityHitBox.x = this.entityHitBox.prevPoint.x;
-    if (!this.isCheckAABB(this.entityHitBox, collisionEntity.view)) {
+    if (!this.isCheckAABB(this.entityHitBox, collisionEntity.view.hitBox)) {
       collisionInfo.isColliding = true;
       this.entityHitBox.x = currentX;
-      if (this.entityHitBox.x < collisionEntity.view.x) {
+      if (this.entityHitBox.x < collisionEntity.view.hitBox.x) {
         collisionInfo.left = true;
         return collisionInfo;
       } else {
@@ -215,12 +215,12 @@ export class Collision {
     return collisionInfo;
   }
 
-  isCheckAABB(entity: IHitBox, collisionEntity: IHitBox) {
+  isCheckAABB(entityHB: IHitBox, collisionEntityHB: IHitBox) {
     return (
-      entity.x + entity.width > collisionEntity.x &&
-      entity.x < collisionEntity.x + collisionEntity.width &&
-      entity.y + entity.height > collisionEntity.y &&
-      entity.y < collisionEntity.y + collisionEntity.height
+      entityHB.x + entityHB.width > collisionEntityHB.x &&
+      entityHB.x < collisionEntityHB.x + collisionEntityHB.width &&
+      entityHB.y + entityHB.height > collisionEntityHB.y &&
+      entityHB.y < collisionEntityHB.y + collisionEntityHB.height
     );
   }
 }
