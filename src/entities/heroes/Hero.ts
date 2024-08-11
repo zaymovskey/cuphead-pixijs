@@ -8,6 +8,7 @@ import {
 } from '@/engines/Сollision.ts';
 import { BaseEntity } from '@/entities/BaseEntity';
 import { HeroView } from '@/entities/heroes/HeroView.ts';
+import { PointData } from 'pixi.js';
 
 export enum EnumHeroStates {
   stay = 'stay',
@@ -29,8 +30,8 @@ export class Hero extends BaseEntity {
 
   isCanJump: boolean = true;
 
-  constructor(collisionEntities: BaseEntity[]) {
-    super(new HeroView());
+  constructor(collisionEntities: BaseEntity[], position: PointData) {
+    super(new HeroView(), position);
 
     this.collisionEntities = collisionEntities;
 

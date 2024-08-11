@@ -1,5 +1,6 @@
 import { BaseEntity } from '@/entities/BaseEntity';
 import { PlatformView } from '@/entities/platforms/PlatformView.ts';
+import { PointData } from 'pixi.js';
 
 export interface IPlatformSize {
   width: number;
@@ -7,7 +8,7 @@ export interface IPlatformSize {
 }
 
 export class Platform extends BaseEntity {
-  constructor(size: IPlatformSize) {
-    super(new PlatformView(size));
+  constructor(size: IPlatformSize, position: PointData) {
+    super(new PlatformView(size), position);
   }
 }

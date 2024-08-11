@@ -1,4 +1,5 @@
 import { Hero } from '@/entities/heroes/Hero.ts';
+import { HeroFactory } from '@/entities/heroes/HeroFactory.ts';
 import { Platform } from '@/entities/platforms/Platform';
 import PlatformFactory from '@/entities/platforms/PlatformFactory';
 import { Application } from 'pixi.js';
@@ -12,7 +13,6 @@ export default class Game {
     this.pixiApp = pixiApp;
 
     const platformFactory = new PlatformFactory(this.pixiApp);
-
     this.platforms.push(
       platformFactory.createPlatform(
         { x: 0, y: 750 },
@@ -26,9 +26,8 @@ export default class Game {
       )
     );
 
-    this.hero = new Hero(this.platforms);
-    this.hero.view.position = { x: 200, y: 10 };
-    this.pixiApp.stage.addChild(this.hero.view);
+    const heroFactory = new HeroFactory(this.pixiApp);
+    this.hero = heroFactory.createHero(this.platforms, { x: 200, y: 10 });
   }
 
   update() {
