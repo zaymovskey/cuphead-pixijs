@@ -5,7 +5,7 @@ interface keyMapExecuteHandlers {
 
 export class KeyboardProcessor {
   private keyMap: {
-    [key in string]?: keyMapExecuteHandlers;
+    [key in string]?: { handlers: keyMapExecuteHandlers; isPressed: boolean };
   } = {};
 
   constructor() {
@@ -17,22 +17,33 @@ export class KeyboardProcessor {
     keyName: string | string[],
     executeHandlers: keyMapExecuteHandlers
   ) {
+    const keyInfo = { handlers: executeHandlers, isPressed: false };
     if (Array.isArray(keyName)) {
       keyName.forEach((key) => {
-        this.keyMap[key] = executeHandlers;
+        this.keyMap[key] = keyInfo;
       });
     } else {
-      this.keyMap[keyName] = executeHandlers;
+      this.keyMap[keyName] = keyInfo;
     }
   }
 
   onKeyDown(key: string) {
     const button = this.keyMap[key];
-    button?.executeDown?.();
+    if (!button) return;
+    button.isPressed = true;
+    button.handlers.executeDown?.();
   }
 
   onKeyUp(key: string) {
     const button = this.keyMap[key];
-    button?.executeUp?.();
+    if (!button) return;
+    button.isPressed = false;
+    button?.handlers.executeUp?.();
+  }
+
+  isButtonPressed(keyName: string | string[]) {
+    const buttonKeyName = Array.isArray(keyName) ? keyName[0] : keyName;
+
+    return this.keyMap[buttonKeyName]?.isPressed || false;
   }
 }

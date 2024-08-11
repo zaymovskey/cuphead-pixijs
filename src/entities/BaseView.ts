@@ -73,7 +73,10 @@ export abstract class BaseView<
     const newState = this.stateMachine.states[newStateName];
     newState.image.visible = true;
     if (changeHitBox && newState.hitBoxSize) {
-      this.hitBox = { ...this.hitBox, ...newState.hitBoxSize };
+      console.log(this.hitBox);
+      this.hitBox.height = newState.hitBoxSize.height;
+      this.hitBox.width = newState.hitBoxSize.width;
+      console.log(this.hitBox);
     }
   }
 

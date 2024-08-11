@@ -31,8 +31,8 @@ export enum EnumHeroStates {
 }
 
 export const movementKeys: Record<string, string[]> = {
-  RIGHT: ['ArrowRight', 'd', 'D', 'в', 'В'],
-  LEFT: ['ArrowLeft', 'a', 'A', 'ф', 'Ф'],
+  RIGHT: ['ArrowRight'],
+  LEFT: ['ArrowLeft'],
   UP: ['Z', 'z', 'Я', 'я'],
 };
 
@@ -50,7 +50,7 @@ export class Hero extends BaseEntity {
 
     this.collisionEntities = collisionEntities;
 
-    this.setControl();
+    this.setMovementControl();
     this.setCollisionHandlers();
   }
 
@@ -67,22 +67,28 @@ export class Hero extends BaseEntity {
     }
   }
 
-  setControl() {
+  setMovementControl() {
     this.keyboardProcessor.setButtonsHandlers(movementKeys.RIGHT, {
       executeDown: () => {
         this.movement.startRightMove();
+        this.view.flip('right');
+        this.view.toState(EnumHeroStates.run);
       },
       executeUp: () => {
         this.movement.stopRightMove();
+        this.view.toState(EnumHeroStates.stay);
       },
     });
 
     this.keyboardProcessor.setButtonsHandlers(movementKeys.LEFT, {
       executeDown: () => {
         this.movement.startLeftMove();
+        this.view.flip('left');
+        this.view.toState(EnumHeroStates.run);
       },
       executeUp: () => {
         this.movement.stopLeftMove();
+        this.view.toState(EnumHeroStates.stay);
       },
     });
 
