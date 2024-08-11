@@ -32,7 +32,7 @@ export class HeroView extends BaseView {
     hero.x = this.heroHitBoxWidth / 2;
 
     const heroPivot = new Graphics()
-      .circle(hero.pivot.x, hero.pivot.y, 2)
+      .circle(hero.pivot.x, hero.pivot.y, 3)
       .fill('red');
 
     hero.addChild(heroPivot);
