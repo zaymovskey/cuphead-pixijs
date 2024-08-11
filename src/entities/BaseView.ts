@@ -1,10 +1,10 @@
 import { getEntriesFromObj } from '@/utils/getEntriesFromObj.ts';
 import { Container, Graphics, PointData } from 'pixi.js';
 
-export interface IStm<StateNames extends string | number | symbol> {
-  currentState: StateNames | 'default';
+export interface IStm<States extends string | number | symbol> {
+  currentState: States | 'default';
   states: {
-    [key in StateNames | 'default']: {
+    [key in States | 'default']: {
       image: Graphics;
       hitBoxSize?: { width: number; height: number };
     };
@@ -50,8 +50,12 @@ export abstract class BaseView<
     this.rootNode = rootNode;
   }
 
-  toState(newStateName: States, changeHitBox: boolean = true) {
-    if (!this.stateMachine || newStateName === this.stateMachine.currentState) {
+  toState(newStateName: States | 'default', changeHitBox: boolean = true) {
+    if (
+      !this.stateMachine ||
+      (newStateName === this.stateMachine.currentState &&
+        newStateName !== 'default')
+    ) {
       return;
     }
 
@@ -70,14 +74,12 @@ export abstract class BaseView<
     this.rootNode!.scale.x = direction === 'left' ? -1 : 1;
   }
 
-  setStatesImages(states: {
-    [key in States | 'default']: { image: Graphics; hitBox?: IHitBox };
-  }) {
-    getEntriesFromObj(states).forEach(([stateName, state]) => {
-      if (stateName !== 'default') {
-        state.image.visible = false;
-      }
+  setStatesImages(states: Pick<IStm<States>, 'states'>['states']) {
+    getEntriesFromObj(states).forEach(([_, state]) => {
+      state.image.visible = false;
       this.rootNode!.addChild(state.image);
     });
+
+    this.toState('default');
   }
 }

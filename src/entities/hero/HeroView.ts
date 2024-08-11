@@ -30,7 +30,9 @@ export class HeroView extends BaseView<EnumHeroStates> {
   constructor() {
     super();
 
+    console.log(this.stateMachine.states);
     this.setStatesImages(this.stateMachine.states);
+
     this.rootNode.pivot.x = this.heroHitBoxWidth / 2;
     this.rootNode.x = this.heroHitBoxWidth / 2;
 

@@ -29,6 +29,7 @@ export const createHeroStateMachine = (heroView: HeroView) => {
 
   const stateMachine: IStm<EnumHeroStates> = {
     currentState: 'default',
+
     states: {
       default: defaultState,
 
