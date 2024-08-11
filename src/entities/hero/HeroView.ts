@@ -9,6 +9,7 @@ export class HeroView extends BaseView {
 
   gunWidth: number = 70;
   gunHeight: number = 20;
+  gunColor: string = '#66b466';
 
   hitBox: IHitBox = {
     x: this.x,
@@ -24,7 +25,7 @@ export class HeroView extends BaseView {
   constructor() {
     super();
 
-    const hero = this.getImage();
+    const hero = this.getImage({ shootAngle: -90 });
 
     this.addChild(hero);
 
@@ -38,7 +39,7 @@ export class HeroView extends BaseView {
     hero.addChild(heroPivot);
   }
 
-  getImage(settings?: { shootAngle?: 0 | 45 | -45 | 90; tilt?: boolean }) {
+  getImage(settings?: { shootAngle?: number; tilt?: boolean }) {
     const hero = new Graphics()
       .rect(this.x, this.y, this.heroHitBoxWidth, this.heroHitBoxHeight)
       .stroke(this.heroHitBoxColor);
@@ -50,7 +51,9 @@ export class HeroView extends BaseView {
     if (settings.shootAngle) {
       const gun = new Graphics()
         .rect(0, 0, this.gunWidth, this.gunHeight)
-        .stroke('#66b466');
+        .stroke(this.gunColor);
+
+      gun.strokeStyle.width = DEFAULT_STROKE_WIDTH;
 
       gun.pivot.y = this.gunHeight / 2;
       gun.pivot.x = this.gunWidth / 4;
@@ -66,6 +69,10 @@ export class HeroView extends BaseView {
       hero.addChild(gun);
 
       gun.rotation = settings.shootAngle * (Math.PI / 180);
+
+      if (settings.shootAngle === -90) {
+        gun.y = this.gunHeight;
+      }
     }
 
     if (settings.tilt) {
