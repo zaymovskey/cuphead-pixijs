@@ -1,5 +1,5 @@
-import { BaseEntity } from '@/entities/BaseEntity.ts';
-import { IHitBox } from '@/entities/BaseView.ts';
+import { BaseEntity } from '@/entities/BaseEntity';
+import { IHitBox } from '@/entities/BaseView';
 import { getEntriesFromObj } from '@/utils/getEntriesFromObj';
 import { PointData } from 'pixi.js';
 

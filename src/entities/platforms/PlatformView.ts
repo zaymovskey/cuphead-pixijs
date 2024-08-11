@@ -1,6 +1,6 @@
-import { DEFAULT_STROKE_WIDTH } from '@/consts/global.ts';
-import { BaseView, IHitBox } from '@/entities/BaseView.ts';
-import { IPlatformSize } from '@/entities/platforms/Platform.ts';
+import { DEFAULT_STROKE_WIDTH } from '@/consts/global';
+import { BaseView, IHitBox } from '@/entities/BaseView';
+import { IPlatformSize } from '@/entities/platforms/Platform';
 import { Graphics } from 'pixi.js';
 
 export class PlatformView extends BaseView {

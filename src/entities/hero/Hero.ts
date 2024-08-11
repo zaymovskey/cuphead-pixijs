@@ -7,7 +7,7 @@ import {
   ICollisionWithScreenBordersHandlers,
 } from '@/engines/Сollision.ts';
 import { BaseEntity } from '@/entities/BaseEntity';
-import { HeroView } from '@/entities/heroes/HeroView.ts';
+import { HeroView } from '@/entities/hero/HeroView.ts';
 import { PointData } from 'pixi.js';
 
 export enum EnumHeroStates {

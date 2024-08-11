@@ -1,5 +1,5 @@
-import { DEFAULT_STROKE_WIDTH } from '@/consts/global.ts';
-import { BaseView, IHitBox } from '@/entities/BaseView.ts';
+import { DEFAULT_STROKE_WIDTH } from '@/consts/global';
+import { BaseView, IHitBox } from '@/entities/BaseView';
 import { Graphics } from 'pixi.js';
 
 export class HeroView extends BaseView {

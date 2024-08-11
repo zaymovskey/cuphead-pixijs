@@ -1,5 +1,5 @@
-import { Hero } from '@/entities/heroes/Hero.ts';
-import { HeroFactory } from '@/entities/heroes/HeroFactory.ts';
+import { Hero } from '@/entities/hero/Hero';
+import { HeroFactory } from '@/entities/hero/HeroFactory';
 import { Platform } from '@/entities/platforms/Platform';
 import PlatformFactory from '@/entities/platforms/PlatformFactory';
 import { Application } from 'pixi.js';

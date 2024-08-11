@@ -1,5 +1,5 @@
-import { BaseEntity } from '@/entities/BaseEntity.ts';
-import { Hero } from '@/entities/heroes/Hero.ts';
+import { BaseEntity } from '@/entities/BaseEntity';
+import { Hero } from '@/entities/hero/Hero';
 import { Application, PointData } from 'pixi.js';
 
 export class HeroFactory {

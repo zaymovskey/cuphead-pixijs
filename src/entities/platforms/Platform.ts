@@ -1,5 +1,5 @@
 import { BaseEntity } from '@/entities/BaseEntity';
-import { PlatformView } from '@/entities/platforms/PlatformView.ts';
+import { PlatformView } from '@/entities/platforms/PlatformView';
 import { PointData } from 'pixi.js';
 
 export interface IPlatformSize {
