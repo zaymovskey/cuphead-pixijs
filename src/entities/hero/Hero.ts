@@ -71,24 +71,18 @@ export class Hero extends BaseEntity {
     this.keyboardProcessor.setButtonsHandlers(movementKeys.RIGHT, {
       executeDown: () => {
         this.movement.startRightMove();
-        this.view.flip('right');
-        this.view.toState(EnumHeroStates.run);
       },
       executeUp: () => {
         this.movement.stopRightMove();
-        this.view.toState(EnumHeroStates.stay);
       },
     });
 
     this.keyboardProcessor.setButtonsHandlers(movementKeys.LEFT, {
       executeDown: () => {
         this.movement.startLeftMove();
-        this.view.flip('left');
-        this.view.toState(EnumHeroStates.run);
       },
       executeUp: () => {
         this.movement.stopLeftMove();
-        this.view.toState(EnumHeroStates.stay);
       },
     });
 

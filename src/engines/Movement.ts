@@ -14,9 +14,9 @@ export class Movement {
     x: 0,
   };
 
-  private directionContext: { left: TypeMovement; right: TypeMovement } = {
-    left: 0,
-    right: 0,
+  private directionContext: { left: boolean; right: boolean } = {
+    left: false,
+    right: false,
   };
 
   constructor(
@@ -37,23 +37,35 @@ export class Movement {
   }
 
   startLeftMove() {
-    this.directionContext.left = -1;
-    this.movement.x = -1;
+    this.directionContext.left = true;
+    if (!this.directionContext.right) {
+      this.movement.x = -1;
+    }
   }
 
   startRightMove() {
-    this.directionContext.right = 1;
-    this.movement.x = 1;
+    this.directionContext.right = true;
+    if (!this.directionContext.left) {
+      this.movement.x = 1;
+    }
   }
 
   stopLeftMove() {
-    this.directionContext.left = 0;
-    this.movement.x = this.directionContext.right;
+    this.directionContext.left = false;
+    if (this.directionContext.right) {
+      this.movement.x = 1;
+    } else {
+      this.movement.x = 0;
+    }
   }
 
   stopRightMove() {
-    this.directionContext.right = 0;
-    this.movement.x = this.directionContext.left;
+    this.directionContext.right = false;
+    if (this.directionContext.left) {
+      this.movement.x = -1;
+    } else {
+      this.movement.x = 0;
+    }
   }
 
   jump() {
