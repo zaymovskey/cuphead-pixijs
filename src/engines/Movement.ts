@@ -36,41 +36,41 @@ export class Movement {
     this.entity.view.hitBox.x += this.velocityX;
   }
 
-  startLeftMove(on: () => void) {
+  startLeftMove(onStartMove: () => void) {
     this.directionContext.left = true;
     if (!this.directionContext.right) {
       this.movement.x = -1;
-      on();
+      onStartMove();
     }
   }
 
-  startRightMove(on: () => void) {
+  startRightMove(onStartMove: () => void) {
     this.directionContext.right = true;
     if (!this.directionContext.left) {
       this.movement.x = 1;
-      on();
+      onStartMove();
     }
   }
 
-  stopLeftMove(on: () => void, huy: () => void) {
+  stopLeftMove(onStopMove: () => void, onChangeDirection: () => void) {
     this.directionContext.left = false;
     if (this.directionContext.right) {
       this.movement.x = 1;
-      huy();
+      onChangeDirection();
     } else {
       this.movement.x = 0;
-      on();
+      onStopMove();
     }
   }
 
-  stopRightMove(on: () => void, huy: () => void) {
+  stopRightMove(onStopMove: () => void, onChangeDirection: () => void) {
     this.directionContext.right = false;
     if (this.directionContext.left) {
       this.movement.x = -1;
-      huy();
+      onChangeDirection();
     } else {
       this.movement.x = 0;
-      on();
+      onStopMove();
     }
   }
 
