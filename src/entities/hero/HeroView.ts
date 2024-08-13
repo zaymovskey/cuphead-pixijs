@@ -1,9 +1,28 @@
 import { BaseView, IStm } from '@/entities/BaseView';
-import { EnumHeroStates } from '@/entities/hero/Hero';
 import { createHeroStateMachine } from '@/entities/hero/utils/createHeroStateMachine';
 import { Container, Graphics } from 'pixi.js';
 
-export class HeroView extends BaseView<EnumHeroStates> {
+export enum EnumHeroViewStates {
+  stay = 'stay',
+  stayShootStraight = 'stayShootStraight',
+  stayShootUp = 'stayShootUp',
+  stayShootDown = 'stayShootDown',
+  stayShootDiagonallyUp = 'stayShootDiagonallyUp',
+  stayShootDiagonallyDown = 'stayShootDiagonallyDown',
+
+  run = 'run',
+  runShootStraight = 'runShootStraight',
+  runShootUp = 'runShootUp',
+  runShootDiagonallyUp = 'runShootDiagonallyUp',
+
+  down = 'down',
+  downShoot = 'downShoot',
+
+  jump = 'jump',
+  fallDown = 'fallDown',
+}
+
+export class HeroView extends BaseView<EnumHeroViewStates> {
   bodyWidth: number = 65;
   bodyHeight: number = 150;
   bodyColor: string = '#ecec19';
@@ -12,7 +31,7 @@ export class HeroView extends BaseView<EnumHeroStates> {
   gunHeight: number = 20;
   gunColor: string = '#66b466';
 
-  stateMachine: IStm<EnumHeroStates> = createHeroStateMachine(this);
+  stateMachine: IStm<EnumHeroViewStates> = createHeroStateMachine(this);
 
   rootNode: Container = new Container();
 

@@ -1,5 +1,5 @@
 import { IStm } from '@/entities/BaseView';
-import { EnumHeroStates } from '@/entities/hero/Hero';
+import { EnumHeroViewStates } from '@/entities/hero/Hero';
 import { HeroView } from '@/entities/hero/HeroView';
 
 export const createHeroStateMachine = (heroView: HeroView) => {
@@ -27,7 +27,7 @@ export const createHeroStateMachine = (heroView: HeroView) => {
     },
   };
 
-  const stateMachine: IStm<EnumHeroStates> = {
+  const stateMachine: IStm<EnumHeroViewStates> = {
     currentState: 'default',
 
     states: {

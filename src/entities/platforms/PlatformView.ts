@@ -3,7 +3,7 @@ import { IPlatformSize } from '@/entities/platforms/Platform';
 import { Graphics } from 'pixi.js';
 
 export class PlatformView extends BaseView {
-  platformColor: string = '#0884bc';
+  platformColor: string = '#66b466';
 
   constructor(size: IPlatformSize) {
     super();

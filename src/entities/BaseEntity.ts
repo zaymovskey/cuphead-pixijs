@@ -3,14 +3,13 @@ import { Collision } from '@/engines/Collision/Сollision';
 import { Gravity } from '@/engines/Gravity';
 import { Movement } from '@/engines/Movement';
 import { BaseView } from '@/entities/BaseView';
-import { EnumHeroStates } from '@/entities/hero/Hero';
 import { Graphics, PointData } from 'pixi.js';
 
 export abstract class BaseEntity {
   gravity?: Gravity;
   movement?: Movement;
   public collision?: Collision;
-  public state?: string | EnumHeroStates;
+  public state?: string;
 
   public view: BaseView;
 
@@ -39,7 +38,7 @@ export abstract class BaseEntity {
           collisionBoxSettings.collisionBox.width,
           collisionBoxSettings.collisionBox.height
         )
-        .stroke('#ff0000');
+        .stroke('#0000ff');
       this.view.addChild(this.collisionBoxGraphics);
     }
   }

@@ -13,20 +13,6 @@ import { PointData } from 'pixi.js';
 
 export enum EnumHeroStates {
   stay = 'stay',
-  stayShootStraight = 'stayShootStraight',
-  stayShootUp = 'stayShootUp',
-  stayShootDown = 'stayShootDown',
-  stayShootDiagonallyUp = 'stayShootDiagonallyUp',
-  stayShootDiagonallyDown = 'stayShootDiagonallyDown',
-
-  run = 'run',
-  runShootStraight = 'runShootStraight',
-  runShootUp = 'runShootUp',
-  runShootDiagonallyUp = 'runShootDiagonallyUp',
-
-  down = 'down',
-  downShoot = 'downShoot',
-
   jump = 'jump',
   fallDown = 'fallDown',
 }
@@ -83,45 +69,19 @@ export class Hero extends BaseEntity {
   setMovementControl() {
     this.keyboardProcessor.setButtonsHandlers(movementKeys.RIGHT, {
       executeDown: () => {
-        this.movement.startRightMove({
-          onStartMove: () => {
-            this.view.flip('right');
-            this.view.toState(EnumHeroStates.run);
-          },
-        });
+        this.movement.startRightMove();
       },
       executeUp: () => {
-        this.movement.stopRightMove({
-          onStopMove: () => {
-            this.view.toState(EnumHeroStates.stay);
-          },
-          onChangeDirection: () => {
-            this.view.flip('left');
-            this.view.toState(EnumHeroStates.run);
-          },
-        });
+        this.movement.stopRightMove();
       },
     });
 
     this.keyboardProcessor.setButtonsHandlers(movementKeys.LEFT, {
       executeDown: () => {
-        this.movement.startLeftMove({
-          onStartMove: () => {
-            this.view.flip('left');
-            this.view.toState(EnumHeroStates.run);
-          },
-        });
+        this.movement.startLeftMove();
       },
       executeUp: () => {
-        this.movement.stopLeftMove({
-          onStopMove: () => {
-            this.view.toState(EnumHeroStates.stay);
-          },
-          onChangeDirection: () => {
-            this.view.flip('right');
-            this.view.toState(EnumHeroStates.run);
-          },
-        });
+        this.movement.stopLeftMove();
       },
     });
 

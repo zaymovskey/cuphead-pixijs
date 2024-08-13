@@ -2,15 +2,6 @@ import { BaseEntity } from '@/entities/BaseEntity';
 
 type TypeMovement = -1 | 0 | 1;
 
-interface IStartMoveSettings {
-  onStartMove?: () => void;
-}
-
-interface IStopMoveSettings {
-  onStopMove?: () => void;
-  onChangeDirection?: () => void;
-}
-
 export class Movement {
   public velocityX: number;
   private readonly maxVelocityX: number;
@@ -45,41 +36,35 @@ export class Movement {
     this.entity.collisionBox.x += this.velocityX;
   }
 
-  startLeftMove(settings?: IStartMoveSettings) {
+  startLeftMove() {
     this.directionContext.left = true;
     if (!this.directionContext.right) {
       this.movement.x = -1;
-      settings?.onStartMove?.();
     }
   }
 
-  startRightMove(settings?: IStartMoveSettings) {
+  startRightMove() {
     this.directionContext.right = true;
     if (!this.directionContext.left) {
       this.movement.x = 1;
-      settings?.onStartMove?.();
     }
   }
 
-  stopLeftMove(settings: IStopMoveSettings) {
+  stopLeftMove() {
     this.directionContext.left = false;
     if (this.directionContext.right) {
       this.movement.x = 1;
-      settings?.onChangeDirection?.();
     } else {
       this.movement.x = 0;
-      settings?.onStopMove?.();
     }
   }
 
-  stopRightMove(settings: IStopMoveSettings) {
+  stopRightMove() {
     this.directionContext.right = false;
     if (this.directionContext.left) {
       this.movement.x = -1;
-      settings?.onChangeDirection?.();
     } else {
       this.movement.x = 0;
-      settings?.onStopMove?.();
     }
   }
 
