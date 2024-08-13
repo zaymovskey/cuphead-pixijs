@@ -1,6 +1,6 @@
-import { IStm } from '@/entities/BaseView.ts';
-import { EnumHeroStates } from '@/entities/hero/Hero.ts';
-import { HeroView } from '@/entities/hero/HeroView.ts';
+import { IStm } from '@/entities/BaseView';
+import { EnumHeroStates } from '@/entities/hero/Hero';
+import { HeroView } from '@/entities/hero/HeroView';
 
 export const createHeroStateMachine = (heroView: HeroView) => {
   const defaultState = {

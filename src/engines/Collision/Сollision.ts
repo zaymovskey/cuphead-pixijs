@@ -1,7 +1,7 @@
-import { CollisionBox } from '@/engines/Collision/CollisionBox.ts';
-import { BaseEntity } from '@/entities/BaseEntity.ts';
-import { ICollisionBox } from '@/entities/BaseView.ts';
-import { getEntriesFromObj } from '@/utils/getEntriesFromObj.ts';
+import { CollisionBox } from '@/engines/Collision/CollisionBox';
+import { BaseEntity } from '@/entities/BaseEntity';
+import { ICollisionBox } from '@/entities/BaseView';
+import { getEntriesFromObj } from '@/utils/getEntriesFromObj';
 import { PointData } from 'pixi.js';
 
 interface ICollisionInfo {

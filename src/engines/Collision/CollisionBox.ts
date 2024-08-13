@@ -1,4 +1,4 @@
-import { ICollisionBox } from '@/entities/BaseView.ts';
+import { ICollisionBox } from '@/entities/BaseView';
 import { PointData } from 'pixi.js';
 
 export class CollisionBox implements ICollisionBox {

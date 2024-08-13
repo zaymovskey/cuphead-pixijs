@@ -1,5 +1,5 @@
-import { CollisionBox } from '@/engines/Collision/CollisionBox.ts';
-import { Collision } from '@/engines/Collision/Сollision.ts';
+import { CollisionBox } from '@/engines/Collision/CollisionBox';
+import { Collision } from '@/engines/Collision/Сollision';
 import { Gravity } from '@/engines/Gravity';
 import { Movement } from '@/engines/Movement';
 import { BaseView } from '@/entities/BaseView';

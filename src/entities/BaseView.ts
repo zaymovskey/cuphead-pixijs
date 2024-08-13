@@ -1,4 +1,4 @@
-import { getEntriesFromObj } from '@/utils/getEntriesFromObj.ts';
+import { getEntriesFromObj } from '@/utils/getEntriesFromObj';
 import { Container, Graphics, PointData } from 'pixi.js';
 
 type TypeStmStatesWithDefault<States extends string = string> =

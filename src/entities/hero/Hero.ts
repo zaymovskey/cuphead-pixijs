@@ -1,14 +1,14 @@
-import { CollisionBox } from '@/engines/Collision/CollisionBox.ts';
+import { CollisionBox } from '@/engines/Collision/CollisionBox';
 import {
   Collision,
   ICollisionHandlers,
   ICollisionWithScreenBordersHandlers,
-} from '@/engines/Collision/Сollision.ts';
+} from '@/engines/Collision/Сollision';
 import { Gravity } from '@/engines/Gravity';
 import { KeyboardProcessor } from '@/engines/KeyboardProcessor';
 import { Movement } from '@/engines/Movement';
 import { BaseEntity } from '@/entities/BaseEntity';
-import { HeroView } from '@/entities/hero/HeroView.ts';
+import { HeroView } from '@/entities/hero/HeroView';
 import { PointData } from 'pixi.js';
 
 export enum EnumHeroStates {

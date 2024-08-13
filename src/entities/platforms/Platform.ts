@@ -1,4 +1,4 @@
-import { CollisionBox } from '@/engines/Collision/CollisionBox.ts';
+import { CollisionBox } from '@/engines/Collision/CollisionBox';
 import { BaseEntity } from '@/entities/BaseEntity';
 import { PlatformView } from '@/entities/platforms/PlatformView';
 import { PointData } from 'pixi.js';
