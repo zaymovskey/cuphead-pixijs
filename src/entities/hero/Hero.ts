@@ -70,41 +70,45 @@ export class Hero extends BaseEntity {
   setMovementControl() {
     this.keyboardProcessor.setButtonsHandlers(movementKeys.RIGHT, {
       executeDown: () => {
-        this.movement.startRightMove(() => {
-          this.view.flip('right');
-          this.view.toState(EnumHeroStates.run);
+        this.movement.startRightMove({
+          onStartMove: () => {
+            this.view.flip('right');
+            this.view.toState(EnumHeroStates.run);
+          },
         });
       },
       executeUp: () => {
-        this.movement.stopRightMove(
-          () => {
+        this.movement.stopRightMove({
+          onStopMove: () => {
             this.view.toState(EnumHeroStates.stay);
           },
-          () => {
+          onChangeDirection: () => {
             this.view.flip('left');
             this.view.toState(EnumHeroStates.run);
-          }
-        );
+          },
+        });
       },
     });
 
     this.keyboardProcessor.setButtonsHandlers(movementKeys.LEFT, {
       executeDown: () => {
-        this.movement.startLeftMove(() => {
-          this.view.flip('left');
-          this.view.toState(EnumHeroStates.run);
+        this.movement.startLeftMove({
+          onStartMove: () => {
+            this.view.flip('left');
+            this.view.toState(EnumHeroStates.run);
+          },
         });
       },
       executeUp: () => {
-        this.movement.stopLeftMove(
-          () => {
+        this.movement.stopLeftMove({
+          onStopMove: () => {
             this.view.toState(EnumHeroStates.stay);
           },
-          () => {
+          onChangeDirection: () => {
             this.view.flip('right');
             this.view.toState(EnumHeroStates.run);
-          }
-        );
+          },
+        });
       },
     });
 

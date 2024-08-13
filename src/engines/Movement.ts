@@ -2,6 +2,15 @@ import { BaseEntity } from '@/entities/BaseEntity';
 
 type TypeMovement = -1 | 0 | 1;
 
+interface IStartMoveSettings {
+  onStartMove?: () => void;
+}
+
+interface IStopMoveSettings {
+  onStopMove?: () => void;
+  onChangeDirection?: () => void;
+}
+
 export class Movement {
   public velocityX: number;
   private readonly maxVelocityX: number;
@@ -36,41 +45,41 @@ export class Movement {
     this.entity.view.hitBox.x += this.velocityX;
   }
 
-  startLeftMove(onStartMove: () => void) {
+  startLeftMove(settings?: IStartMoveSettings) {
     this.directionContext.left = true;
     if (!this.directionContext.right) {
       this.movement.x = -1;
-      onStartMove();
+      settings?.onStartMove?.();
     }
   }
 
-  startRightMove(onStartMove: () => void) {
+  startRightMove(settings?: IStartMoveSettings) {
     this.directionContext.right = true;
     if (!this.directionContext.left) {
       this.movement.x = 1;
-      onStartMove();
+      settings?.onStartMove?.();
     }
   }
 
-  stopLeftMove(onStopMove: () => void, onChangeDirection: () => void) {
+  stopLeftMove(settings: IStopMoveSettings) {
     this.directionContext.left = false;
     if (this.directionContext.right) {
       this.movement.x = 1;
-      onChangeDirection();
+      settings?.onChangeDirection?.();
     } else {
       this.movement.x = 0;
-      onStopMove();
+      settings?.onStopMove?.();
     }
   }
 
-  stopRightMove(onStopMove: () => void, onChangeDirection: () => void) {
+  stopRightMove(settings: IStopMoveSettings) {
     this.directionContext.right = false;
     if (this.directionContext.left) {
       this.movement.x = -1;
-      onChangeDirection();
+      settings?.onChangeDirection?.();
     } else {
       this.movement.x = 0;
-      onStopMove();
+      settings?.onStopMove?.();
     }
   }
 
