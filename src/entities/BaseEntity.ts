@@ -4,7 +4,7 @@ import { Gravity } from '@/engines/Gravity';
 import { Movement } from '@/engines/Movement';
 import { BaseView } from '@/entities/BaseView';
 import { EnumHeroStates } from '@/entities/hero/Hero';
-import { PointData } from 'pixi.js';
+import { Graphics, PointData } from 'pixi.js';
 
 export abstract class BaseEntity {
   gravity?: Gravity;
@@ -15,18 +15,33 @@ export abstract class BaseEntity {
   public view: BaseView;
 
   public collisionBox: CollisionBox;
+  private readonly collisionBoxGraphics?: Graphics;
 
   protected constructor(
     view: BaseView,
     position: PointData,
-    collisionBox: CollisionBox
+    collisionBoxSettings: {
+      collisionBox: CollisionBox;
+      isShowCollisionBox: boolean;
+    }
   ) {
     this.view = view;
-    this.collisionBox = collisionBox;
-
+    this.collisionBox = collisionBoxSettings.collisionBox;
     this.collisionBox.x = position.x;
     this.collisionBox.y = position.y;
     this.view.position = position;
+
+    if (collisionBoxSettings.isShowCollisionBox) {
+      this.collisionBoxGraphics = new Graphics()
+        .rect(
+          0,
+          0,
+          collisionBoxSettings.collisionBox.width,
+          collisionBoxSettings.collisionBox.height
+        )
+        .stroke('#ff0000');
+      this.view.addChild(this.collisionBoxGraphics);
+    }
   }
 
   protected update() {}

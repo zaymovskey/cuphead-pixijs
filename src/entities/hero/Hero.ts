@@ -47,10 +47,8 @@ export class Hero extends BaseEntity {
   isCanJump: boolean = true;
 
   constructor(collisionEntities: BaseEntity[], position: PointData) {
-    super(
-      new HeroView(),
-      position,
-      new CollisionBox({
+    super(new HeroView(), position, {
+      collisionBox: new CollisionBox({
         x: 0,
         y: 0,
         width: 65,
@@ -59,8 +57,9 @@ export class Hero extends BaseEntity {
           x: 0,
           y: 0,
         },
-      })
-    );
+      }),
+      isShowCollisionBox: false,
+    });
 
     this.collisionEntities = collisionEntities;
 

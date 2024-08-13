@@ -10,10 +10,8 @@ export interface IPlatformSize {
 
 export class Platform extends BaseEntity {
   constructor(size: IPlatformSize, position: PointData) {
-    super(
-      new PlatformView(size),
-      position,
-      new CollisionBox({
+    super(new PlatformView(size), position, {
+      collisionBox: new CollisionBox({
         x: 0,
         y: 0,
         width: size.width,
@@ -22,7 +20,8 @@ export class Platform extends BaseEntity {
           x: 0,
           y: 0,
         },
-      })
-    );
+      }),
+      isShowCollisionBox: false,
+    });
   }
 }

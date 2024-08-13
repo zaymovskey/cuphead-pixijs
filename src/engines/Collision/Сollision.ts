@@ -1,6 +1,5 @@
-import { CollisionBox } from '@/engines/Collision/CollisionBox';
+import { CollisionBox, ICollisionBox } from '@/engines/Collision/CollisionBox';
 import { BaseEntity } from '@/entities/BaseEntity';
-import { ICollisionBox } from '@/entities/BaseView';
 import { getEntriesFromObj } from '@/utils/getEntriesFromObj';
 import { PointData } from 'pixi.js';
 

@@ -1,5 +1,12 @@
-import { ICollisionBox } from '@/entities/BaseView';
 import { PointData } from 'pixi.js';
+
+export interface ICollisionBox {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  prevPoint: PointData;
+}
 
 export class CollisionBox implements ICollisionBox {
   x: number = 0;

@@ -1,5 +1,5 @@
 import { getEntriesFromObj } from '@/utils/getEntriesFromObj';
-import { Container, Graphics, PointData } from 'pixi.js';
+import { Container, Graphics } from 'pixi.js';
 
 type TypeStmStatesWithDefault<States extends string = string> =
   | States
@@ -10,17 +10,8 @@ export interface IStm<States extends string = string> {
   states: {
     [key in TypeStmStatesWithDefault<States>]: {
       image: Graphics;
-      collisionBoxSize?: { width: number; height: number };
     };
   };
-}
-
-export interface ICollisionBox {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  prevPoint: PointData;
 }
 
 export abstract class BaseView<
