@@ -6,8 +6,8 @@ export const createHeroStateMachine = (heroView: HeroView) => {
   const defaultState = {
     image: heroView.getImage(),
     collisionBoxSize: {
-      width: heroView.heroCollisionBoxWidth,
-      height: heroView.heroCollisionBoxHeight,
+      width: heroView.bodyWidth,
+      height: heroView.bodyHeight,
     },
   };
 
@@ -18,12 +18,12 @@ export const createHeroStateMachine = (heroView: HeroView) => {
 
   const jumpState = {
     image: heroView.getImage({
-      width: heroView.heroCollisionBoxWidth,
-      height: heroView.heroCollisionBoxWidth,
+      width: heroView.bodyWidth,
+      height: heroView.bodyWidth,
     }),
     collisionBoxSize: {
-      width: heroView.heroCollisionBoxWidth,
-      height: heroView.heroCollisionBoxWidth,
+      width: heroView.bodyWidth,
+      height: heroView.bodyWidth,
     },
   };
 

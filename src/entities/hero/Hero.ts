@@ -1,3 +1,4 @@
+import { CollisionBox } from '@/engines/Collision/CollisionBox.ts';
 import {
   Collision,
   ICollisionHandlers,
@@ -46,7 +47,20 @@ export class Hero extends BaseEntity {
   isCanJump: boolean = true;
 
   constructor(collisionEntities: BaseEntity[], position: PointData) {
-    super(new HeroView(), position);
+    super(
+      new HeroView(),
+      position,
+      new CollisionBox({
+        x: 0,
+        y: 0,
+        width: 65,
+        height: 150,
+        prevPoint: {
+          x: 0,
+          y: 0,
+        },
+      })
+    );
 
     this.collisionEntities = collisionEntities;
 
@@ -127,42 +141,38 @@ export class Hero extends BaseEntity {
   setCollisionHandlers() {
     const collisionHandlers: ICollisionHandlers = {};
     collisionHandlers.bottom = (_, collisionEntityHB) => {
-      this.view.collisionBox.y =
-        collisionEntityHB.y - this.view.collisionBox.height;
+      this.collisionBox.y = collisionEntityHB.y - this.collisionBox.height;
       this.gravity.velocityY = 0;
       this.state = EnumHeroStates.stay;
     };
     collisionHandlers.left = (_, collisionEntityHB) => {
-      this.view.collisionBox.x =
-        collisionEntityHB.x - this.view.collisionBox.width;
+      this.collisionBox.x = collisionEntityHB.x - this.collisionBox.width;
     };
     collisionHandlers.right = (_, collisionEntityHB) => {
-      this.view.collisionBox.x = collisionEntityHB.x + collisionEntityHB.width;
+      this.collisionBox.x = collisionEntityHB.x + collisionEntityHB.width;
     };
 
     const collisionWithScreenBordersHandlers: ICollisionWithScreenBordersHandlers =
       {};
     collisionWithScreenBordersHandlers.top = () => {
-      this.view.collisionBox.y = 0;
+      this.collisionBox.y = 0;
       this.gravity.velocityY = 0;
     };
     collisionWithScreenBordersHandlers.bottom = () => {
-      this.view.collisionBox.y =
-        window.innerHeight - this.view.collisionBox.height;
+      this.collisionBox.y = window.innerHeight - this.collisionBox.height;
       this.gravity.velocityY = 0;
       this.state = EnumHeroStates.stay;
     };
 
     collisionWithScreenBordersHandlers.left = () => {
-      this.view.collisionBox.x = 0;
+      this.collisionBox.x = 0;
     };
     collisionWithScreenBordersHandlers.right = () => {
-      this.view.collisionBox.x =
-        window.innerWidth - this.view.collisionBox.width;
+      this.collisionBox.x = window.innerWidth - this.collisionBox.width;
     };
 
     this.collision = new Collision(
-      this,
+      this.collisionBox,
       this.collisionEntities,
       collisionHandlers,
       collisionWithScreenBordersHandlers

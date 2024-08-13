@@ -1,3 +1,4 @@
+import { CollisionBox } from '@/engines/Collision/CollisionBox.ts';
 import { BaseEntity } from '@/entities/BaseEntity.ts';
 import { ICollisionBox } from '@/entities/BaseView.ts';
 import { getEntriesFromObj } from '@/utils/getEntriesFromObj.ts';
@@ -62,12 +63,12 @@ export class Collision {
   };
 
   constructor(
-    entity: BaseEntity,
+    entityCollisionBox: CollisionBox,
     collisionEntities: BaseEntity[],
     collisionHandlers: ICollisionHandlers,
     collisionWithScreenBordersHandlers?: ICollisionWithScreenBordersHandlers
   ) {
-    this.entityCollisionBox = entity.view.collisionBox;
+    this.entityCollisionBox = entityCollisionBox;
 
     this.collisionEntities = collisionEntities;
     getEntriesFromObj(collisionHandlers).forEach(([key, handler]) => {
@@ -114,7 +115,7 @@ export class Collision {
       collisionTypes.forEach((collisionType) => {
         this.collisionHandlers[collisionType]?.(
           this.entityCollisionBox.prevPoint,
-          collisionEntity.view.collisionBox
+          collisionEntity.collisionBox
         );
       });
     });
@@ -182,10 +183,7 @@ export class Collision {
     };
 
     if (
-      !this.isCheckAABB(
-        this.entityCollisionBox,
-        collisionEntity.view.collisionBox
-      )
+      !this.isCheckAABB(this.entityCollisionBox, collisionEntity.collisionBox)
     ) {
       return collisionInfo;
     }
@@ -193,14 +191,11 @@ export class Collision {
     const currentY = this.entityCollisionBox.y;
     this.entityCollisionBox.y = this.entityCollisionBox.prevPoint.y;
     if (
-      !this.isCheckAABB(
-        this.entityCollisionBox,
-        collisionEntity.view.collisionBox
-      )
+      !this.isCheckAABB(this.entityCollisionBox, collisionEntity.collisionBox)
     ) {
       collisionInfo.isColliding = true;
       this.entityCollisionBox.y = currentY;
-      if (this.entityCollisionBox.y < collisionEntity.view.collisionBox.y) {
+      if (this.entityCollisionBox.y < collisionEntity.collisionBox.y) {
         collisionInfo.bottom = true;
         return collisionInfo;
       } else {
@@ -214,14 +209,11 @@ export class Collision {
     const currentX = this.entityCollisionBox.x;
     this.entityCollisionBox.x = this.entityCollisionBox.prevPoint.x;
     if (
-      !this.isCheckAABB(
-        this.entityCollisionBox,
-        collisionEntity.view.collisionBox
-      )
+      !this.isCheckAABB(this.entityCollisionBox, collisionEntity.collisionBox)
     ) {
       collisionInfo.isColliding = true;
       this.entityCollisionBox.x = currentX;
-      if (this.entityCollisionBox.x < collisionEntity.view.collisionBox.x) {
+      if (this.entityCollisionBox.x < collisionEntity.collisionBox.x) {
         collisionInfo.left = true;
         return collisionInfo;
       } else {

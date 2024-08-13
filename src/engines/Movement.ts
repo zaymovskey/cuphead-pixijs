@@ -42,7 +42,7 @@ export class Movement {
 
   update() {
     this.velocityX = this.movement.x * this.maxVelocityX;
-    this.entity.view.collisionBox.x += this.velocityX;
+    this.entity.collisionBox.x += this.velocityX;
   }
 
   startLeftMove(settings?: IStartMoveSettings) {

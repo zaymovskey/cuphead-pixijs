@@ -1,27 +1,16 @@
-import { BaseView, ICollisionBox, IStm } from '@/entities/BaseView';
+import { BaseView, IStm } from '@/entities/BaseView';
 import { EnumHeroStates } from '@/entities/hero/Hero';
 import { createHeroStateMachine } from '@/entities/hero/utils/createHeroStateMachine';
 import { Container, Graphics } from 'pixi.js';
 
 export class HeroView extends BaseView<EnumHeroStates> {
-  heroCollisionBoxWidth: number = 65;
-  heroCollisionBoxHeight: number = 150;
-  heroCollisionBoxColor: string = '#ecec19';
+  bodyWidth: number = 65;
+  bodyHeight: number = 150;
+  bodyColor: string = '#ecec19';
 
   gunWidth: number = 70;
   gunHeight: number = 20;
   gunColor: string = '#66b466';
-
-  collisionBox: ICollisionBox = {
-    x: this.x,
-    y: this.y,
-    width: this.heroCollisionBoxWidth,
-    height: this.heroCollisionBoxHeight,
-    prevPoint: {
-      x: this.x,
-      y: this.y,
-    },
-  };
 
   stateMachine: IStm<EnumHeroStates> = createHeroStateMachine(this);
 
@@ -33,8 +22,8 @@ export class HeroView extends BaseView<EnumHeroStates> {
     console.log(this.stateMachine.states);
     this.setStatesImages(this.stateMachine.states);
 
-    this.rootNode.pivot.x = this.heroCollisionBoxWidth / 2;
-    this.rootNode.x = this.heroCollisionBoxWidth / 2;
+    this.rootNode.pivot.x = this.bodyWidth / 2;
+    this.rootNode.x = this.bodyWidth / 2;
 
     this.addChild(this.rootNode);
   }
@@ -49,10 +38,10 @@ export class HeroView extends BaseView<EnumHeroStates> {
       .rect(
         this.x,
         this.y,
-        settings?.width || this.heroCollisionBoxWidth,
-        settings?.height || this.heroCollisionBoxHeight
+        settings?.width || this.bodyWidth,
+        settings?.height || this.bodyHeight
       )
-      .stroke(this.heroCollisionBoxColor);
+      .stroke(this.bodyColor);
 
     hero.strokeStyle.width = this.DEFAULT_STROKE_WIDTH;
 
@@ -68,8 +57,8 @@ export class HeroView extends BaseView<EnumHeroStates> {
       gun.pivot.y = this.gunHeight / 2;
       gun.pivot.x = this.gunWidth / 4;
 
-      gun.x = this.heroCollisionBoxWidth - this.heroCollisionBoxWidth / 7;
-      gun.y = (settings?.height || this.heroCollisionBoxHeight) / 2;
+      gun.x = this.bodyWidth - this.bodyWidth / 7;
+      gun.y = (settings?.height || this.bodyHeight) / 2;
 
       const gunPivot = new Graphics()
         .circle(gun.pivot.x, gun.pivot.y, 2)

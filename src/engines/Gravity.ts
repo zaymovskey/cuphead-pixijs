@@ -14,6 +14,6 @@ export class Gravity {
 
   update() {
     this.velocityY += this.acceleration;
-    this.entity.view.collisionBox.y += this.velocityY;
+    this.entity.collisionBox.y += this.velocityY;
   }
 }

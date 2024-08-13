@@ -32,17 +32,6 @@ export abstract class BaseView<
 
   rootNode?: Container;
 
-  public collisionBox: ICollisionBox = {
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-    prevPoint: {
-      x: 0,
-      y: 0,
-    },
-  };
-
   protected constructor() {
     super();
     this.createNodeStructure();
@@ -54,10 +43,7 @@ export abstract class BaseView<
     this.rootNode = rootNode;
   }
 
-  toState(
-    newStateName: TypeStmStatesWithDefault<States>,
-    changeCollisionBox: boolean = true
-  ) {
+  toState(newStateName: TypeStmStatesWithDefault<States>) {
     if (
       !this.stateMachine ||
       (newStateName === this.stateMachine.currentState &&
@@ -72,12 +58,6 @@ export abstract class BaseView<
 
     const newState = this.stateMachine.states[newStateName];
     newState.image.visible = true;
-    if (changeCollisionBox && newState.collisionBoxSize) {
-      console.log(this.collisionBox);
-      this.collisionBox.height = newState.collisionBoxSize.height;
-      this.collisionBox.width = newState.collisionBoxSize.width;
-      console.log(this.collisionBox);
-    }
   }
 
   flip(direction: 'left' | 'right') {

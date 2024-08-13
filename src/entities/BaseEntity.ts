@@ -1,3 +1,4 @@
+import { CollisionBox } from '@/engines/Collision/CollisionBox.ts';
 import { Collision } from '@/engines/Collision/Сollision.ts';
 import { Gravity } from '@/engines/Gravity';
 import { Movement } from '@/engines/Movement';
@@ -13,20 +14,27 @@ export abstract class BaseEntity {
 
   public view: BaseView;
 
-  protected constructor(view: BaseView, position: PointData) {
-    this.view = view;
+  public collisionBox: CollisionBox;
 
-    this.view.collisionBox.x = position.x;
-    this.view.collisionBox.y = position.y;
+  protected constructor(
+    view: BaseView,
+    position: PointData,
+    collisionBox: CollisionBox
+  ) {
+    this.view = view;
+    this.collisionBox = collisionBox;
+
+    this.collisionBox.x = position.x;
+    this.collisionBox.y = position.y;
     this.view.position = position;
   }
 
   protected update() {}
 
   public completeUpdate(): void {
-    this.view.collisionBox.prevPoint = {
-      x: this.view.collisionBox.x,
-      y: this.view.collisionBox.y,
+    this.collisionBox.prevPoint = {
+      x: this.collisionBox.x,
+      y: this.collisionBox.y,
     };
 
     this.gravity?.update();
@@ -34,7 +42,7 @@ export abstract class BaseEntity {
 
     this.collision?.update();
 
-    this.view.x = this.view.collisionBox.x;
-    this.view.y = this.view.collisionBox.y;
+    this.view.x = this.collisionBox.x;
+    this.view.y = this.collisionBox.y;
   }
 }
