@@ -5,25 +5,25 @@ import { HeroView } from '@/entities/hero/HeroView.ts';
 export const createHeroStateMachine = (heroView: HeroView) => {
   const defaultState = {
     image: heroView.getImage(),
-    hitBoxSize: {
-      width: heroView.heroHitBoxWidth,
-      height: heroView.heroHitBoxHeight,
+    collisionBoxSize: {
+      width: heroView.heroCollisionBoxWidth,
+      height: heroView.heroCollisionBoxHeight,
     },
   };
 
   const downStateSize = {
-    width: defaultState.hitBoxSize.width,
-    height: defaultState.hitBoxSize.height / 3,
+    width: defaultState.collisionBoxSize.width,
+    height: defaultState.collisionBoxSize.height / 3,
   };
 
   const jumpState = {
     image: heroView.getImage({
-      width: heroView.heroHitBoxWidth,
-      height: heroView.heroHitBoxWidth,
+      width: heroView.heroCollisionBoxWidth,
+      height: heroView.heroCollisionBoxWidth,
     }),
-    hitBoxSize: {
-      width: heroView.heroHitBoxWidth,
-      height: heroView.heroHitBoxWidth,
+    collisionBoxSize: {
+      width: heroView.heroCollisionBoxWidth,
+      height: heroView.heroCollisionBoxWidth,
     },
   };
 
@@ -74,11 +74,11 @@ export const createHeroStateMachine = (heroView: HeroView) => {
 
       down: {
         image: heroView.getImage(downStateSize),
-        hitBoxSize: downStateSize,
+        collisionBoxSize: downStateSize,
       },
       downShoot: {
         image: heroView.getImage({ ...downStateSize, shootAngle: 0 }),
-        hitBoxSize: downStateSize,
+        collisionBoxSize: downStateSize,
       },
 
       jump: jumpState,

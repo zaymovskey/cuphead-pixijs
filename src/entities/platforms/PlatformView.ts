@@ -1,11 +1,11 @@
-import { BaseView, IHitBox } from '@/entities/BaseView';
+import { BaseView, ICollisionBox } from '@/entities/BaseView';
 import { IPlatformSize } from '@/entities/platforms/Platform';
 import { Graphics } from 'pixi.js';
 
 export class PlatformView extends BaseView {
   platformColor: string = '#0884bc';
 
-  hitBox: IHitBox = {
+  collisionBox: ICollisionBox = {
     x: this.x,
     y: this.y,
     width: 0,
@@ -19,8 +19,8 @@ export class PlatformView extends BaseView {
   constructor(size: IPlatformSize) {
     super();
 
-    this.hitBox.width = size.width;
-    this.hitBox.height = size.height;
+    this.collisionBox.width = size.width;
+    this.collisionBox.height = size.height;
 
     const platform = new Graphics()
       .rect(this.x, this.y, size.width, size.height)

@@ -1,6 +1,6 @@
-import { BaseEntity } from '@/entities/BaseEntity';
-import { IHitBox } from '@/entities/BaseView';
-import { getEntriesFromObj } from '@/utils/getEntriesFromObj';
+import { BaseEntity } from '@/entities/BaseEntity.ts';
+import { ICollisionBox } from '@/entities/BaseView.ts';
+import { getEntriesFromObj } from '@/utils/getEntriesFromObj.ts';
 import { PointData } from 'pixi.js';
 
 interface ICollisionInfo {
@@ -13,7 +13,7 @@ interface ICollisionInfo {
 
 export type TypeCollisionHandler = (
   prevPoint: PointData,
-  collisionEntityHB: IHitBox
+  collisionEntityHB: ICollisionBox
 ) => void;
 
 export type TypeCollisionWithScreenBordersHandler = (
@@ -40,7 +40,7 @@ interface ICollisionsIsActive {
 }
 
 export class Collision {
-  private readonly entityHitBox: IHitBox;
+  private readonly entityCollisionBox: ICollisionBox;
   private collisionEntities: BaseEntity[];
   private readonly collisionHandlers: ICollisionHandlers = {
     top: () => {},
@@ -67,7 +67,7 @@ export class Collision {
     collisionHandlers: ICollisionHandlers,
     collisionWithScreenBordersHandlers?: ICollisionWithScreenBordersHandlers
   ) {
-    this.entityHitBox = entity.view.hitBox;
+    this.entityCollisionBox = entity.view.collisionBox;
 
     this.collisionEntities = collisionEntities;
     getEntriesFromObj(collisionHandlers).forEach(([key, handler]) => {
@@ -113,8 +113,8 @@ export class Collision {
       const collisionTypes = this.getCollisionType(collisionInfo);
       collisionTypes.forEach((collisionType) => {
         this.collisionHandlers[collisionType]?.(
-          this.entityHitBox.prevPoint,
-          collisionEntity.view.hitBox
+          this.entityCollisionBox.prevPoint,
+          collisionEntity.view.collisionBox
         );
       });
     });
@@ -129,7 +129,7 @@ export class Collision {
     const collisionTypes = this.getCollisionType(collisionWithScreenBorderInfo);
     collisionTypes.forEach((collisionType) => {
       this.collisionWithScreenBordersHandlers[collisionType]?.(
-        this.entityHitBox.prevPoint
+        this.entityCollisionBox.prevPoint
       );
     });
   }
@@ -143,22 +143,28 @@ export class Collision {
       isColliding: false,
     };
 
-    if (this.entityHitBox.y + this.entityHitBox.height > window.innerHeight) {
+    if (
+      this.entityCollisionBox.y + this.entityCollisionBox.height >
+      window.innerHeight
+    ) {
       collisionInfo.bottom = true;
       collisionInfo.isColliding = true;
     }
 
-    if (this.entityHitBox.y < 0) {
+    if (this.entityCollisionBox.y < 0) {
       collisionInfo.top = true;
       collisionInfo.isColliding = true;
     }
 
-    if (this.entityHitBox.x + this.entityHitBox.width > window.innerWidth) {
+    if (
+      this.entityCollisionBox.x + this.entityCollisionBox.width >
+      window.innerWidth
+    ) {
       collisionInfo.right = true;
       collisionInfo.isColliding = true;
     }
 
-    if (this.entityHitBox.x < 0) {
+    if (this.entityCollisionBox.x < 0) {
       collisionInfo.left = true;
       collisionInfo.isColliding = true;
     }
@@ -175,16 +181,26 @@ export class Collision {
       isColliding: false,
     };
 
-    if (!this.isCheckAABB(this.entityHitBox, collisionEntity.view.hitBox)) {
+    if (
+      !this.isCheckAABB(
+        this.entityCollisionBox,
+        collisionEntity.view.collisionBox
+      )
+    ) {
       return collisionInfo;
     }
 
-    const currentY = this.entityHitBox.y;
-    this.entityHitBox.y = this.entityHitBox.prevPoint.y;
-    if (!this.isCheckAABB(this.entityHitBox, collisionEntity.view.hitBox)) {
+    const currentY = this.entityCollisionBox.y;
+    this.entityCollisionBox.y = this.entityCollisionBox.prevPoint.y;
+    if (
+      !this.isCheckAABB(
+        this.entityCollisionBox,
+        collisionEntity.view.collisionBox
+      )
+    ) {
       collisionInfo.isColliding = true;
-      this.entityHitBox.y = currentY;
-      if (this.entityHitBox.y < collisionEntity.view.hitBox.y) {
+      this.entityCollisionBox.y = currentY;
+      if (this.entityCollisionBox.y < collisionEntity.view.collisionBox.y) {
         collisionInfo.bottom = true;
         return collisionInfo;
       } else {
@@ -193,29 +209,34 @@ export class Collision {
       }
     }
 
-    this.entityHitBox.y = currentY;
+    this.entityCollisionBox.y = currentY;
 
-    const currentX = this.entityHitBox.x;
-    this.entityHitBox.x = this.entityHitBox.prevPoint.x;
-    if (!this.isCheckAABB(this.entityHitBox, collisionEntity.view.hitBox)) {
+    const currentX = this.entityCollisionBox.x;
+    this.entityCollisionBox.x = this.entityCollisionBox.prevPoint.x;
+    if (
+      !this.isCheckAABB(
+        this.entityCollisionBox,
+        collisionEntity.view.collisionBox
+      )
+    ) {
       collisionInfo.isColliding = true;
-      this.entityHitBox.x = currentX;
-      if (this.entityHitBox.x < collisionEntity.view.hitBox.x) {
+      this.entityCollisionBox.x = currentX;
+      if (this.entityCollisionBox.x < collisionEntity.view.collisionBox.x) {
         collisionInfo.left = true;
         return collisionInfo;
       } else {
-        this.entityHitBox.x = currentX;
+        this.entityCollisionBox.x = currentX;
         collisionInfo.right = true;
         return collisionInfo;
       }
     }
 
-    this.entityHitBox.x = currentX;
+    this.entityCollisionBox.x = currentX;
 
     return collisionInfo;
   }
 
-  isCheckAABB(entityHB: IHitBox, collisionEntityHB: IHitBox) {
+  isCheckAABB(entityHB: ICollisionBox, collisionEntityHB: ICollisionBox) {
     return (
       entityHB.x + entityHB.width > collisionEntityHB.x &&
       entityHB.x < collisionEntityHB.x + collisionEntityHB.width &&

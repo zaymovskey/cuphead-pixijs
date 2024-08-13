@@ -1,6 +1,6 @@
+import { Collision } from '@/engines/Collision/Сollision.ts';
 import { Gravity } from '@/engines/Gravity';
 import { Movement } from '@/engines/Movement';
-import { Collision } from '@/engines/Сollision';
 import { BaseView } from '@/entities/BaseView';
 import { EnumHeroStates } from '@/entities/hero/Hero';
 import { PointData } from 'pixi.js';
@@ -16,17 +16,17 @@ export abstract class BaseEntity {
   protected constructor(view: BaseView, position: PointData) {
     this.view = view;
 
-    this.view.hitBox.x = position.x;
-    this.view.hitBox.y = position.y;
+    this.view.collisionBox.x = position.x;
+    this.view.collisionBox.y = position.y;
     this.view.position = position;
   }
 
   protected update() {}
 
   public completeUpdate(): void {
-    this.view.hitBox.prevPoint = {
-      x: this.view.hitBox.x,
-      y: this.view.hitBox.y,
+    this.view.collisionBox.prevPoint = {
+      x: this.view.collisionBox.x,
+      y: this.view.collisionBox.y,
     };
 
     this.gravity?.update();
@@ -34,7 +34,7 @@ export abstract class BaseEntity {
 
     this.collision?.update();
 
-    this.view.x = this.view.hitBox.x;
-    this.view.y = this.view.hitBox.y;
+    this.view.x = this.view.collisionBox.x;
+    this.view.y = this.view.collisionBox.y;
   }
 }

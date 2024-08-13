@@ -10,12 +10,12 @@ export interface IStm<States extends string = string> {
   states: {
     [key in TypeStmStatesWithDefault<States>]: {
       image: Graphics;
-      hitBoxSize?: { width: number; height: number };
+      collisionBoxSize?: { width: number; height: number };
     };
   };
 }
 
-export interface IHitBox {
+export interface ICollisionBox {
   x: number;
   y: number;
   width: number;
@@ -32,7 +32,7 @@ export abstract class BaseView<
 
   rootNode?: Container;
 
-  public hitBox: IHitBox = {
+  public collisionBox: ICollisionBox = {
     x: 0,
     y: 0,
     width: 0,
@@ -56,7 +56,7 @@ export abstract class BaseView<
 
   toState(
     newStateName: TypeStmStatesWithDefault<States>,
-    changeHitBox: boolean = true
+    changeCollisionBox: boolean = true
   ) {
     if (
       !this.stateMachine ||
@@ -72,11 +72,11 @@ export abstract class BaseView<
 
     const newState = this.stateMachine.states[newStateName];
     newState.image.visible = true;
-    if (changeHitBox && newState.hitBoxSize) {
-      console.log(this.hitBox);
-      this.hitBox.height = newState.hitBoxSize.height;
-      this.hitBox.width = newState.hitBoxSize.width;
-      console.log(this.hitBox);
+    if (changeCollisionBox && newState.collisionBoxSize) {
+      console.log(this.collisionBox);
+      this.collisionBox.height = newState.collisionBoxSize.height;
+      this.collisionBox.width = newState.collisionBoxSize.width;
+      console.log(this.collisionBox);
     }
   }
 
