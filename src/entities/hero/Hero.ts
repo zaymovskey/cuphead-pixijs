@@ -5,7 +5,8 @@ import {
   ICollisionWithScreenBordersHandlers,
 } from '@/engines/Collision/Сollision';
 import { Gravity } from '@/engines/Gravity';
-import { KeyboardProcessor } from '@/engines/KeyboardProcessor';
+import { KeyboardProcessor } from '@/engines/KeyboardProcessor/KeyboardProcessor';
+import { KeyCode } from '@/engines/KeyboardProcessor/types';
 import { Movement } from '@/engines/Movement';
 import { BaseEntity } from '@/entities/BaseEntity';
 import { HeroView } from '@/entities/hero/HeroView';
@@ -17,10 +18,10 @@ export enum EnumHeroStates {
   fallDown = 'fallDown',
 }
 
-export const movementKeys: Record<string, string[]> = {
+export const movementKeys: Record<string, KeyCode[]> = {
   RIGHT: ['ArrowRight'],
   LEFT: ['ArrowLeft'],
-  UP: ['Z', 'z', 'Я', 'я'],
+  UP: ['KeyZ'],
 };
 
 export class Hero extends BaseEntity {
