@@ -1,6 +1,5 @@
 import { IStm } from '@/entities/BaseView';
-import { EnumHeroViewStates } from '@/entities/hero/Hero';
-import { HeroView } from '@/entities/hero/HeroView';
+import { EnumHeroViewStates, HeroView } from '@/entities/hero/HeroView';
 
 export const createHeroStateMachine = (heroView: HeroView) => {
   const defaultState = {
@@ -74,11 +73,9 @@ export const createHeroStateMachine = (heroView: HeroView) => {
 
       down: {
         image: heroView.getImage(downStateSize),
-        collisionBoxSize: downStateSize,
       },
       downShoot: {
         image: heroView.getImage({ ...downStateSize, shootAngle: 0 }),
-        collisionBoxSize: downStateSize,
       },
 
       jump: jumpState,

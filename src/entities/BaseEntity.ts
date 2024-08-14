@@ -6,7 +6,7 @@ import { BaseView } from '@/entities/BaseView';
 import { Graphics, PointData } from 'pixi.js';
 
 export abstract class BaseEntity {
-  gravity?: Gravity;
+  public gravity?: Gravity;
   movement?: Movement;
   public collision?: Collision;
   public state?: string;
