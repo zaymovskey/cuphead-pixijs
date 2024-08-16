@@ -50,10 +50,8 @@ export abstract class BaseEntity {
       x: this.collisionBox.x,
       y: this.collisionBox.y,
     };
-
-    this.gravity?.update();
     this.update();
-
+    this.gravity?.update();
     this.collision?.update();
 
     this.view.x = this.collisionBox.x;

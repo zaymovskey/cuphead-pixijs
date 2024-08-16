@@ -45,7 +45,7 @@ export class Hero extends BaseEntity {
           y: 0,
         },
       }),
-      isShowCollisionBox: false,
+      isShowCollisionBox: true,
     });
 
     this.collisionEntities = collisionEntities;
@@ -65,6 +65,8 @@ export class Hero extends BaseEntity {
       this.collision!.collisionsIsActive.collisionEntities = true;
       this.state = EnumHeroStates.fallDown;
     }
+
+    console.log(this.gravity.velocityY);
   }
 
   setMovementControl() {
