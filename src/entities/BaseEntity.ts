@@ -58,5 +58,10 @@ export abstract class BaseEntity {
 
     this.view.x = this.collisionBox.x;
     this.view.y = this.collisionBox.y;
+
+    if (this.collisionBoxGraphics) {
+      this.collisionBoxGraphics.height = this.collisionBox.height;
+      this.collisionBoxGraphics.width = this.collisionBox.width;
+    }
   }
 }
