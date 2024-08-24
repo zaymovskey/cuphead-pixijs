@@ -70,10 +70,6 @@ export class Movement {
 
   jump() {
     if (!this.entity.gravity) return;
-
-    if (this.entity.state !== 'jump') {
-      this.entity.state = 'jump';
-      this.entity.gravity.velocityY -= this.jumpAcceleration;
-    }
+    this.entity.gravity.velocityY -= this.jumpAcceleration;
   }
 }

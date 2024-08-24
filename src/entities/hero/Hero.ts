@@ -18,7 +18,7 @@ export enum EnumHeroStates {
   fallDown = 'fallDown',
 }
 
-export const movementKeys: Record<string, KeyCode[]> = {
+export const movementKeys: { [key in string]: KeyCode[] } = {
   RIGHT: ['ArrowRight'],
   LEFT: ['ArrowLeft'],
   UP: ['KeyZ'],
@@ -55,7 +55,6 @@ export class Hero extends BaseEntity {
   }
 
   update() {
-    console.log(this.state);
     if (this.gravity.velocityY < 0) {
       this.collision!.collisionsIsActive.collisionEntities = false;
     }
@@ -88,6 +87,7 @@ export class Hero extends BaseEntity {
     this.keyboardProcessor.setButtonsHandlers(movementKeys.UP, {
       executeDown: () => {
         if (this.state !== EnumHeroStates.stay || !this.isCanJump) return;
+        this.state = EnumHeroStates.jump;
         this.movement.jump();
         this.isCanJump = false;
       },
