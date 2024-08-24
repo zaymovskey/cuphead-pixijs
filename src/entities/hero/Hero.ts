@@ -55,8 +55,7 @@ export class Hero extends BaseEntity {
   }
 
   update() {
-    this.movement.update();
-
+    console.log(this.state);
     if (this.gravity.velocityY < 0) {
       this.collision!.collisionsIsActive.collisionEntities = false;
     }
@@ -65,8 +64,6 @@ export class Hero extends BaseEntity {
       this.collision!.collisionsIsActive.collisionEntities = true;
       this.state = EnumHeroStates.fallDown;
     }
-
-    console.log(this.gravity.velocityY);
   }
 
   setMovementControl() {
