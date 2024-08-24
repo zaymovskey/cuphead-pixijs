@@ -90,6 +90,7 @@ export class Hero extends BaseEntity {
         this.state = EnumHeroStates.jump;
         this.movement.jump();
         this.isCanJump = false;
+        this.collisionBox.height = 65;
       },
       executeUp: () => {
         this.isCanJump = true;
@@ -102,6 +103,10 @@ export class Hero extends BaseEntity {
     collisionHandlers.bottom = (_, collisionEntityHB) => {
       this.collisionBox.y = collisionEntityHB.y - this.collisionBox.height;
       this.gravity.velocityY = 0;
+      if (this.collisionBox.height !== 150) {
+        this.collisionBox.height = 150;
+        this.collisionBox.y -= 150 - 65;
+      }
       this.state = EnumHeroStates.stay;
     };
     collisionHandlers.left = (_, collisionEntityHB) => {
